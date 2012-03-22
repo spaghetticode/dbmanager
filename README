@@ -1,0 +1,33 @@
+## dbmanager
+
+usage:
+rake db:import
+clones the remote db on the fs then imports it via mysql-dump
+
+rake db:dump
+saves the remote db on the fs
+
+All tasks will ask you which env you want to save, and if you want to import, to which env.
+
+es:
+
+be rake db:import
+
+Select the source db:
+1) beta
+2) production
+3) development
+
+1
+
+Select the destination db:
+
+1) beta
+3) development
+
+3
+
+Dumping beta db....
+Importing data to development db...
+
+done
