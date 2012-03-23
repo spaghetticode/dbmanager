@@ -2,11 +2,7 @@ require 'spec_helper'
 
 module Dbmanager
   describe YmlParser do
-    before do
-     ::RAILS_ROOT = fixture_path unless defined? RAILS_ROOT
-     YmlParser.config = nil
-     YmlParser.stub! :db_config_file => File.join(fixture_path, 'database.yml')
-   end
+    before { stub_database_yml }
 
     describe '#config' do
       it 'should load a yml file with erb code inside' do
@@ -14,16 +10,16 @@ module Dbmanager
       end
 
       it 'should cache the result' do
+        YAML.should_receive(:load).once.and_return('something')
         YmlParser.config
-        YAML.should_not_receive(:load)
         YmlParser.config
       end
     end
 
     describe '#reload_config' do
       it 'should reload the yml file' do
+        YAML.should_receive(:load).twice.and_return('something')
         YmlParser.config
-        YAML.should_receive(:load)
         YmlParser.reload_config
       end
     end

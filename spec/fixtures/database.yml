@@ -1,7 +1,7 @@
 # This is the default login for the root user
 devLogin: &developmentLogin
   username: root
-  password:
+  password: devil
 
 prodLogin: &productionLogin
   username: db_user
@@ -45,6 +45,8 @@ test:
   adapter: mysql
   database: demo_test
   encoding: utf8
+  port: 3306
+  host: 345.345.345.345
   <<: *developmentLogin
 
 shop:
