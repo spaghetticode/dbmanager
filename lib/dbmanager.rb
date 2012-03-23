@@ -1,7 +1,11 @@
 module Dbmanager
-  unless defined?(RAILS_GEM_VERSION) && RAILS_GEM_VERSION < '3'
+  if defined? Rails and Rails.version.to_f >= 3
     class Engine < Rails::Engine
     end
+  end
+
+  def self.rails_root
+    Rails.root
   end
 end
 
@@ -13,3 +17,4 @@ require 'active_support/core_ext/module'
 require File.expand_path '../dbmanager/yml_parser', __FILE__
 require File.expand_path '../dbmanager/adapters/mysql', __FILE__
 require File.expand_path '../dbmanager/importer', __FILE__
+require File.expand_path '../dbmanager/dumper', __FILE__

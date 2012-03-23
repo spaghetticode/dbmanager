@@ -1,15 +1,12 @@
 module Dbmanager
-  class Importer
-    class AdapterError < StandardError; end
-
-    attr_reader :environments, :source, :target, :adapter
-    PROTECTED_ENVS = %w[production]
+  class Dumper
+    attr_reader :environments, :source, :adapter, :filename
 
     def initialize
       @environments = YmlParser.environments
       @adapter      = set_adapter
       @source       = adapter::Connection.new(set_source)
-      @target       = adapter::Connection.new(set_target)
+      @filename     = set_filename
       run
     end
 
@@ -24,32 +21,41 @@ module Dbmanager
 
     def set_source
       puts "\nPlease choose source db:\n\n"
-      get_env(:source)
+      get_env
     end
 
-    def set_target
-      puts "\nPlease choose target db:\n\n"
-      get_env(:target)
+    def set_filename
+      puts "\nPlease choose target file (defaults to #{default_filename}\n\n"
+      get_filename
     end
 
-    def get_env(type)
+    def run
+      adapter::Dumper.new(source, filename).run
+      puts "Database Dump completed to #{filename}"
+    end
+
+    def get_env
       environments.keys.each_with_index do |name, i|
         puts "#{i+1}) #{name}"
       end
       pos = ''
       until (1..environments.size).include? pos
         pos = STDIN.gets.chomp.to_i
-        if type == :target and PROTECTED_ENVS.include? @environments.keys[pos-1]
-          puts "Cannot let you overwrite protected database.\nChoose again\n\n"
-          pos = ''
-        end
       end
       environments.values[pos-1]
     end
 
-    def run
-      adapter::Importer.new(source, target).run
-      puts "Database Import completed."
+    def default_filename
+      "#{Dbmanager.rails_root.join 'tmp', "#{source.database}.sql"}"
+    end
+
+    def get_filename
+      filename = STDIN.gets.chomp
+      if filename.blank?
+        default_filename
+      else
+        Rails.root.join(filename)
+      end
     end
   end
 end

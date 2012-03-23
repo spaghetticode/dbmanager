@@ -21,6 +21,23 @@ module Dbmanager
         end
       end
 
+      class Dumper
+        attr_reader :source, :filename
+
+        def initialize(source, filename)
+          @source   = source
+          @filename = filename
+        end
+
+        def run
+          system dump_command
+        end
+
+        def dump_command
+          "mysqldump #{source.params} > #{filename}"
+        end
+      end
+
       class Importer
         attr_reader :source, :target
 
@@ -30,13 +47,9 @@ module Dbmanager
         end
 
         def run
-          system dump_command
+          Dumper.new(source, temp_sql_file).run
           system import_command
           # remove temporary file?
-        end
-
-        def dump_command
-          "mysqldump #{source.params} > #{temp_sql_file}"
         end
 
         def import_command

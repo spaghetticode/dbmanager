@@ -49,12 +49,6 @@ module Dbmanager
             subject.temp_sql_file.should == '/tmp/120323123032'
           end
 
-          describe '#dump_command' do
-            it 'should return expected command' do
-              subject.dump_command.should == 'mysqldump source-params > /tmp/120323123032'
-            end
-          end
-
           describe '#import_command' do
             it 'should return expected command' do
               subject.import_command.should == 'mysql target-params < /tmp/120323123032'
@@ -62,10 +56,20 @@ module Dbmanager
           end
 
           describe '#run' do
-            it 'should execute 2 system commands' do
-              subject.should_receive(:system).twice
+            it 'should execute a system command' do
+              subject.should_receive(:system)
               subject.run
             end
+          end
+        end
+      end
+
+      describe Dumper do
+        subject { Dumper.new mock(:params => 'source-params'), '/tmp/dump_file.sql' }
+
+        describe '#dump_command' do
+          it 'should return expected command' do
+            subject.dump_command.should == 'mysqldump source-params > /tmp/dump_file.sql'
           end
         end
       end
