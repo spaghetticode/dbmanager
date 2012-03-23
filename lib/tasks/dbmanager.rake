@@ -1,6 +1,11 @@
 namespace :db do
-  desc 'dump an environment db data into another environment'
-  task :dump  do
+  desc 'import specific environment db data into another environment db'
+  task :import  do
     Dbmanager::Importer.new
+  end
+
+  desc 'dump specific environment db data in tmp directory'
+  task :dump do
+    Dbmanager::Dumper.new
   end
 end
