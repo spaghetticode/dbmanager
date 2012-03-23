@@ -36,7 +36,7 @@ module Dbmanager
     end
 
     def db_config_file
-      if Rails.defined?
+      if defined? Rails
         Rails.root.join 'config', 'database.yml'
       else
         raise 'no database.yml file found in the expected dir!'

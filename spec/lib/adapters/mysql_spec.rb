@@ -18,6 +18,21 @@ module Dbmanager
               subject.params.should == '-uroot -pdevil -h345.345.345.345 -P3306 demo_test'
             end
           end
+
+          describe '#flag' do
+            context 'when requested flag has a value' do
+              it 'should return expected string' do
+                subject.flag(:password, :p).should == '-pdevil'
+              end
+            end
+
+            context 'when requested flag has no value' do
+              it 'should return a blank string' do
+                subject.stub!(:password => nil)
+                subject.flag(:password, :p).should == ''
+              end
+            end
+          end
         end
       end
 

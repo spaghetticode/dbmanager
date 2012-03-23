@@ -13,7 +13,11 @@ module Dbmanager
         end
 
         def params
-          "-u#{username} -p#{password} -h#{host or 'localhost'} -P#{port or 3306} #{database}"
+          "-u#{username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{database}"
+        end
+
+        def flag(name, flag)
+          send(name).present? ? "-#{flag}#{send(name)}" : ''
         end
       end
 
@@ -26,10 +30,9 @@ module Dbmanager
         end
 
         def run
-          # system dump_command
-          # system import_command
-          puts dump_command
-          puts import_command
+          system dump_command
+          system import_command
+          # remove temporary file?
         end
 
         def dump_command
