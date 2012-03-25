@@ -1,23 +1,10 @@
-# This is the default login for the root user
-devLogin: &developmentLogin
-  username: root
-  password: devil
-
-prodLogin: &productionLogin
-  username: db_user
-  password: tango
-
-# This will include a file with user-defined login credentials (if it exists)
-<%=
-    file = File.join(RAILS_ROOT, 'config', 'dblogin.yml')
-    IO.read(file) if File.exist?(file)
-%>
-
 development:
   adapter: mysql
   database: demo_development
   encoding: utf8
-  <<: *developmentLogin
+  username: root
+  password: devil
+
   # ale i tuoi settaggi specifici devi metterli in config/dbloginyml, non qui
   # socket: /Applications/MAMP/tmp/mysql/mysql.sock
 
@@ -26,7 +13,6 @@ beta:
   database: demo_beta
   username: beta_username
   password: asdasd
-  adapter: mysql
   port: 3306
   host: 123.123.123.123
   encoding: utf8
@@ -36,7 +22,6 @@ production:
   database: demo_production
   username: production_username
   password: asdasd
-  adapter: mysql
   port: 3306
   host: 123.123.123.123
   encoding: utf8
@@ -47,7 +32,8 @@ test:
   encoding: utf8
   port: 3306
   host: 345.345.345.345
-  <<: *developmentLogin
+  username: root
+  password: devil
 
 shop:
   adapter: mysql

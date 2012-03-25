@@ -1,0 +1,6 @@
+beta:
+  host: 345.345.345.345
+  protected: true
+
+production:
+  protected: false
