@@ -3,10 +3,16 @@ require 'time'
 module Dbmanager
   module Adapters
     module Mysql
+      class EnvironmentProtectedError < StandardError
+        def initialize(message=nil)
+          super message || 'sorry the environment is protected from writing'
+        end
+      end
+
       class Connection
         attr_reader :environment
 
-        delegate :host, :adapter, :database, :username, :password, :port, :encoding, :to => :environment
+        delegate :host, :adapter, :database, :username, :password, :port, :encoding, :protected, :name, :to => :environment
 
         def initialize(environment)
           @environment = environment
@@ -19,6 +25,14 @@ module Dbmanager
         def flag(name, flag)
           send(name).present? ? "-#{flag}#{send(name)}" : ''
         end
+
+        def protected?
+          if name == 'production'
+            protected != false
+          else
+            protected == true
+          end
+        end
       end
 
       class Dumper
@@ -30,7 +44,7 @@ module Dbmanager
         end
 
         def run
-          system dump_command
+          Dbmanager.execute dump_command
         end
 
         def dump_command
@@ -48,12 +62,16 @@ module Dbmanager
 
         def run
           Dumper.new(source, temp_sql_file).run
-          system import_command
-          # remove temporary file?
+          Dbmanager.execute import_command
+          # TODO remove temporary file?
         end
 
         def import_command
-          "mysql #{target.params} < #{temp_sql_file}"
+          unless target.protected?
+            "mysql #{target.params} < #{temp_sql_file}"
+          else
+            raise EnvironmentProtectedError
+          end
         end
 
         def temp_sql_file

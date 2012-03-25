@@ -2,7 +2,10 @@ require 'spec_helper'
 
 module Dbmanager
   describe YmlParser do
-    before { stub_database_yml }
+    before do
+      stub_rails_root
+      YmlParser.config = nil
+    end
 
     describe '#config' do
       it 'should load a yml file with erb code inside' do
@@ -10,7 +13,8 @@ module Dbmanager
       end
 
       it 'should cache the result' do
-        YAML.should_receive(:load).once.and_return('something')
+        YmlParser.stub :override_config => {}
+        YmlParser.should_receive(:yml_load).once.and_return({:some => :conf})
         YmlParser.config
         YmlParser.config
       end
@@ -18,18 +22,25 @@ module Dbmanager
 
     describe '#reload_config' do
       it 'should reload the yml file' do
-        YAML.should_receive(:load).twice.and_return('something')
+        YmlParser.stub :override_config => {}
+        YmlParser.should_receive(:yml_load).twice.and_return({:some => :conf})
         YmlParser.config
         YmlParser.reload_config
       end
     end
 
     describe '#environments' do
-      it 'should be an hash of open structs' do
+      it 'should be an hash of environments' do
         YmlParser.environments.should be_a(Hash)
         YmlParser.environments.values.should be_all do |item|
           item.is_a?(Environment)
         end
+      end
+    end
+
+    context 'when there is a dbmanager_override file' do
+      it 'should override regular settings' do
+        YmlParser.config['beta']['host'].should == '345.345.345.345'
       end
     end
   end

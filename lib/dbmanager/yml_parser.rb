@@ -2,16 +2,21 @@ require 'erb'
 require 'yaml'
 require 'ostruct'
 
+# TODO: override values
+
 module Dbmanager
   module YmlParser
     class Environment < OpenStruct; end
 
     extend self
-
     attr_writer :config
 
     def config
-      @config ||= YAML.load db_config_file_parsed
+      @config ||= yml_load(db_config_file).merge(override_config)
+    end
+
+    def override_config
+      File.file?(db_override_file) ? yml_load(db_override_file) : {}
     end
 
     def reload_config
@@ -24,19 +29,23 @@ module Dbmanager
         config.select do |key, value|
           value.has_key?('adapter')
         end.each_with_object({}) do |arr, hash|
-          hash[arr[0]] = Environment.new arr[1]
+          hash[arr[0]] = Environment.new arr[1].merge(:name => arr[0])
         end
       end
     end
 
     private
 
-    def db_config_file_parsed
-      ERB.new(File.read(db_config_file)).result
+    def yml_load(path)
+      YAML.load ERB.new(File.read(path)).result
     end
 
     def db_config_file
-      Dbmanager.rails_root.join 'config', 'database.yml'
+      File.join Dbmanager.rails_root, 'config', 'database.yml'
+    end
+
+    def db_override_file
+      File.join Dbmanager.rails_root, 'config', 'dbmanager_override.yml'
     end
   end
 end

@@ -1,11 +1,23 @@
 module Dbmanager
+  class AdapterError < StandardError
+    def initialize(message)
+      super message || 'You cannot mix different adapters'
+    end
+  end
+
   if defined? Rails and Rails.version.to_f >= 3
     class Engine < Rails::Engine
     end
   end
 
-  def self.rails_root
+  extend self
+
+  def rails_root
     Rails.root
+  end
+
+  def execute(command)
+    system command
   end
 end
 
@@ -16,5 +28,6 @@ require 'active_support/core_ext/module'
 
 require File.expand_path '../dbmanager/yml_parser', __FILE__
 require File.expand_path '../dbmanager/adapters/mysql', __FILE__
+require File.expand_path '../dbmanager/runner', __FILE__
 require File.expand_path '../dbmanager/importer', __FILE__
 require File.expand_path '../dbmanager/dumper', __FILE__
