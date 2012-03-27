@@ -44,6 +44,7 @@ module Dbmanager
         end
 
         def run
+          p "dumping #{source.name} database"
           Dbmanager.execute dump_command
         end
 
@@ -62,6 +63,7 @@ module Dbmanager
 
         def run
           Dumper.new(source, temp_sql_file).run
+          puts "importing #{source.name} into #{target.name} database"
           Dbmanager.execute import_command
           # TODO remove temporary file?
         end
