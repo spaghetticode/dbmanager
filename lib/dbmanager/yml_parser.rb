@@ -1,6 +1,7 @@
 require 'erb'
 require 'yaml'
 require 'ostruct'
+require 'active_support/core_ext/hash'
 
 # TODO: override values
 
@@ -12,7 +13,7 @@ module Dbmanager
     attr_writer :config
 
     def config
-      @config ||= yml_load(db_config_file).merge(override_config)
+      @config ||= yml_load(db_config_file).deep_merge(override_config)
     end
 
     def override_config

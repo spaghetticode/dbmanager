@@ -42,6 +42,10 @@ module Dbmanager
       it 'should override regular settings' do
         YmlParser.config['beta']['host'].should == '345.345.345.345'
       end
+
+      it 'should not remove old unchanged settings' do
+        YmlParser.config['beta']['username'].should == 'beta_username'
+      end
     end
   end
 end
