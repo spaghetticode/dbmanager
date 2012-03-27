@@ -1,0 +1,6 @@
+Description:
+  The dbmanager generator adds required file paths to your Rakefile. You should
+  run this generator only on Rails 2.x apps.
+
+Examples:
+    script/generate dbmanager
