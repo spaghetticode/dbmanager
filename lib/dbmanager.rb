@@ -1,13 +1,13 @@
 module Dbmanager
   class AdapterError < StandardError
     def initialize(message=nil)
-      super message || 'You cannot mix different adapters'
+      super message || 'You cannot mix different adapters!'
     end
   end
 
   class CommandError < StandardError
     def initialize(message=nil)
-      super message || 'could not execute command'
+      super message || 'Could not execute command!'
     end
   end
 
@@ -21,7 +21,8 @@ module Dbmanager
     Rails.root
   end
 
-  def execute(command)
+  def execute(command, output=STDOUT)
+    output.puts %(executing "#{command}")
     system command
   end
 

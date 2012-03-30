@@ -1,21 +1,21 @@
 module Dbmanager
   class Dumper < Runner
-    attr_reader :filename
+    attr_reader :filename, :output, :input
 
-    def initialize
+    def initialize(input=STDIN, output=STDOUT)
       super
       @filename = set_filename
     end
 
     def run
       adapter::Dumper.new(source, filename).run
-      puts "Database Dump completed to #{filename}"
+      output.puts "Database Dump completed to #{filename}"
     end
 
     private
 
     def set_filename
-      puts "\nPlease choose target file (defaults to #{default_filename}\n\n"
+      output.puts "\nPlease choose target file (defaults to #{default_filename})\n\n"
       get_filename
     end
 
@@ -24,7 +24,7 @@ module Dbmanager
     end
 
     def get_filename
-      filename = STDIN.gets.chomp
+      filename = input.gets.chomp
       filename.blank? ? default_filename : Dbmanager.rails_root.join(filename)
     end
   end

@@ -14,6 +14,12 @@ describe Dbmanager do
       Dbmanager.should_receive(:system)
       Dbmanager.execute('echo')
     end
+
+    it 'outputs the command that is executing' do
+      output = OutputStub.new
+      Dbmanager.execute('echo', output)
+      output.content.should include 'executing "echo"'
+    end
   end
 
   describe '#execute!' do

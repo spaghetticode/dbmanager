@@ -6,7 +6,9 @@ module Dbmanager
       new.run
     end
 
-    def initialize
+    def initialize(input, output)
+      @input        = input
+      @output       = output
       @environments = YmlParser.environments
       @adapter      = set_adapter
       @source       = adapter::Connection.new(set_source)
@@ -22,17 +24,18 @@ module Dbmanager
     end
 
     def set_source
-      puts "\nPlease choose source db:\n\n"
+      output.puts "\nPlease choose source db:\n\n"
       get_env
     end
 
     def get_env
       environments.keys.each_with_index do |name, i|
-        puts "#{i+1}) #{name}"
+        output.puts "#{i+1}) #{name}"
       end
+      output.puts
       pos = ''
       until (1..environments.size).include? pos
-        pos = STDIN.gets.chomp.to_i
+        pos = input.gets.chomp.to_i
       end
       environments.values[pos-1]
     end
