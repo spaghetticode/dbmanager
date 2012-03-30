@@ -1,6 +1,6 @@
 module Dbmanager
   class Runner
-    attr_reader :environments, :source, :adapter
+    attr_reader :input, :output, :environments, :source, :adapter
 
     def self.run
       new.run
@@ -15,7 +15,7 @@ module Dbmanager
     end
 
     def set_adapter
-      adapters = @environments.map {|name, env| env.adapter}.uniq
+      adapters = environments.map {|name, env| env.adapter}.uniq
       if adapters.size > 1
         raise AdapterError
       else

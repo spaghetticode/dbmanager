@@ -1,6 +1,6 @@
 module Dbmanager
   class Dumper < Runner
-    attr_reader :filename, :output, :input
+    attr_reader :filename
 
     def initialize(input=STDIN, output=STDOUT)
       super

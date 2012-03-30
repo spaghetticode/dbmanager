@@ -3,8 +3,6 @@ require 'yaml'
 require 'ostruct'
 require 'active_support/core_ext/hash'
 
-# TODO: override values
-
 module Dbmanager
   module YmlParser
     class Environment < OpenStruct; end
@@ -29,7 +27,7 @@ module Dbmanager
       @environments ||= begin
         config.select do |key, value|
           value.has_key?('adapter')
-        end.each_with_object({}) do |arr, hash|
+        end.each_with_object(ActiveSupport::OrderedHash.new) do |arr, hash|
           hash[arr[0]] = Environment.new arr[1].merge(:name => arr[0])
         end
       end

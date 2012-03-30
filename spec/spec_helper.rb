@@ -1,5 +1,5 @@
 require File.expand_path('../../lib/dbmanager', __FILE__)
-require 'support/output_stub'
+require 'support/std_stub'
 
 RSpec.configure do |config|
   config.color_enabled = true

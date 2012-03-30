@@ -16,7 +16,7 @@ describe Dbmanager do
     end
 
     it 'outputs the command that is executing' do
-      output = OutputStub.new
+      output = STDStub.new
       Dbmanager.execute('echo', output)
       output.content.should include 'executing "echo"'
     end

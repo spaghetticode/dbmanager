@@ -1,4 +1,4 @@
-class OutputStub < StringIO
+class STDStub < StringIO
   def content
     rewind
     read
