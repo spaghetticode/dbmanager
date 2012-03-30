@@ -44,7 +44,7 @@ module Dbmanager
         end
 
         def run
-          p "dumping #{source.name} database"
+          puts "dumping #{source.name} database"
           Dbmanager.execute dump_command
         end
 
