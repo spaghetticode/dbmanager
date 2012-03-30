@@ -73,6 +73,6 @@ production:
 
 ### TODO
 
-* Add runner.rb, importer.rb, dumper.rb, dbmanager.rb tests
+* Add runner.rb, importer.rb, dumper.rb tests
 * Add more db adapters
 * remove views from mysql dumps so they don't interfere in the import process
