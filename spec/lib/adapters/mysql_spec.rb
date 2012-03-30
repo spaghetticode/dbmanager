@@ -95,6 +95,7 @@ module Dbmanager
 
           describe '#run' do
             it 'dumps the db' do
+              Dbmanager.stub!(:execute! => nil)
               Dumper.should_receive(:new).and_return(mock.as_null_object)
               subject.run
             end
@@ -102,7 +103,7 @@ module Dbmanager
             it 'imports the db' do
               Dumper.stub! :new => mock.as_null_object
               subject.stub!(:remove_temp_file => true)
-              Dbmanager.should_receive(:execute).with(subject.import_command)
+              Dbmanager.should_receive(:execute!).with(subject.import_command)
               subject.run
             end
           end

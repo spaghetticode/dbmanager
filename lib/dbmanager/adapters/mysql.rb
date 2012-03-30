@@ -45,7 +45,7 @@ module Dbmanager
 
         def run
           puts "executing #{dump_command}"
-          Dbmanager.execute dump_command
+          Dbmanager.execute! dump_command
         end
 
         def dump_command
@@ -64,7 +64,7 @@ module Dbmanager
         def run
           Dumper.new(source, temp_file).run
           puts "executing #{import_command}"
-          Dbmanager.execute import_command
+          Dbmanager.execute! import_command
           remove_temp_file
         end
 
