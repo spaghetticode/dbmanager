@@ -19,7 +19,7 @@ If you're on a rails 2.x application you also need to run:
 ```ruby
 script/generate dbmanager
 ```
-to add the gem tasks to the rake tasks list.
+that will copy the gem rake tasks file into the lib/tasks directory.
 
 #### Database Imports
 

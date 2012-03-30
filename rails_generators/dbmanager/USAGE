@@ -1,5 +1,5 @@
 Description:
-  The dbmanager generator adds required file paths to your Rakefile. You should
+  The dbmanager generator adds the dbmanager rake file in lib/tasks. You should
   run this generator only on Rails 2.x apps.
 
 Examples:
