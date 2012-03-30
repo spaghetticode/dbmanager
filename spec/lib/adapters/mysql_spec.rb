@@ -24,9 +24,9 @@ module Dbmanager
               subject.should_not be_protected
             end
 
-            context 'when name is production' do
+            context 'when name matches production string' do
               it ' should be true by default ' do
-                subject.stub! :name => 'production'
+                subject.stub! :name => 'production-merge'
                 subject.should be_protected
               end
 

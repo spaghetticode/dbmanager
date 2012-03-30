@@ -27,7 +27,7 @@ module Dbmanager
         end
 
         def protected?
-          if name == 'production'
+          if name =~ /production/
             protected != false
           else
             protected == true
