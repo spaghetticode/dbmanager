@@ -44,7 +44,7 @@ module Dbmanager
         end
 
         def run
-          puts "dumping #{source.name} database"
+          puts "executing #{dump_command}"
           Dbmanager.execute dump_command
         end
 
@@ -62,22 +62,26 @@ module Dbmanager
         end
 
         def run
-          Dumper.new(source, temp_sql_file).run
-          puts "importing #{source.name} into #{target.name} database"
+          Dumper.new(source, temp_file).run
+          puts "executing #{import_command}"
           Dbmanager.execute import_command
-          # TODO remove temporary file?
+          remove_temp_file
         end
 
         def import_command
           unless target.protected?
-            "mysql #{target.params} < #{temp_sql_file}"
+            "mysql #{target.params} < #{temp_file}"
           else
             raise EnvironmentProtectedError
           end
         end
 
-        def temp_sql_file
-          @temp_sql_file ||= "/tmp/#{Time.now.strftime '%y%m%d%H%M%S'}"
+        def remove_temp_file
+          Dbmanager.execute "rm #{temp_file}"
+        end
+
+        def temp_file
+          @temp_file ||= "/tmp/#{Time.now.strftime '%y%m%d%H%M%S'}"
         end
       end
     end

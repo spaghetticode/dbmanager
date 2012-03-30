@@ -8,11 +8,11 @@ module Dbmanager
     end
 
     describe '#config' do
-      it 'should load a yml file with erb code inside' do
+      it 'loads a yml file with erb code inside' do
         YmlParser.config.should be_a(Hash)
       end
 
-      it 'should cache the result' do
+      it 'caches the result' do
         YmlParser.stub :override_config => {}
         YmlParser.should_receive(:yml_load).once.and_return({:some => :conf})
         YmlParser.config
@@ -21,7 +21,7 @@ module Dbmanager
     end
 
     describe '#reload_config' do
-      it 'should reload the yml file' do
+      it 'reloads the yml file' do
         YmlParser.stub :override_config => {}
         YmlParser.should_receive(:yml_load).twice.and_return({:some => :conf})
         YmlParser.config
@@ -30,7 +30,7 @@ module Dbmanager
     end
 
     describe '#environments' do
-      it 'should be an hash of environments' do
+      it 'is an hash of environments' do
         YmlParser.environments.should be_a(Hash)
         YmlParser.environments.values.should be_all do |item|
           item.is_a?(Environment)
@@ -39,11 +39,11 @@ module Dbmanager
     end
 
     context 'when there is a dbmanager_override file' do
-      it 'should override regular settings' do
+      it 'overrides regular settings' do
         YmlParser.config['beta']['host'].should == '345.345.345.345'
       end
 
-      it 'should not remove old unchanged settings' do
+      it 'removes old unchanged settings' do
         YmlParser.config['beta']['username'].should == 'beta_username'
       end
     end

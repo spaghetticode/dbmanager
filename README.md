@@ -54,7 +54,7 @@ protected from overwriting:
 
 ```yaml
 beta:
-  host: 123.123.123.123
+  host: 192.168.0.1
 ```
 we should put in dbmanager_override.yml this:
 
@@ -64,16 +64,15 @@ beta:
   protected: true
 ```
 
-Instead, if we want to make production writable we should add this:
+Instead, if we want to make the production env writable we should add this:
 
 ```yaml
 production:
   protected: false
 ```
 
-## TODO
+### TODO
 
 * Add runner.rb, importer.rb, dumper.rb, dbmanager.rb tests
-* Delete temporary db dumps from tmp when finished
 * Add more db adapters
 * remove views from mysql dumps so they don't interfere in the import process
