@@ -4,7 +4,6 @@ class DbmanagerGenerator < Rails::Generator::Base
 
   def manifest
     record do |m|
-      rails_rake_file = Rails.root.join 'lib/tasks', RAKE_FILENAME
       contents = File.readlines(RAKE_FILE_PATH).unshift(lib_requires)
       File.open(rails_rake_file, 'w') {|f| f.puts contents.join}
       print_message
@@ -12,6 +11,10 @@ class DbmanagerGenerator < Rails::Generator::Base
   end
 
   private
+
+  def rails_rake_file
+    Rails.root.join 'lib/tasks', RAKE_FILENAME
+  end
 
   def lib_requires
     "require '#{File.expand_path('../../../lib', __FILE__)}/dbmanager.rb'\n\n"
