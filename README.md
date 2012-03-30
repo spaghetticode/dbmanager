@@ -6,6 +6,7 @@ dumps and imports. At the moment only the mysql adapter is available.
 The gems works both on rails 2.x and 3.x applications, but due to rails 2.x
 limitations you have to run a generator, see the usage section
 
+
 ### Usage
 
 Add the gem to your gemfile:
@@ -21,16 +22,6 @@ script/generate dbmanager
 ```
 that will copy the gem rake tasks file into the lib/tasks directory.
 
-#### Database Imports
-
-```ruby
-rake db:import
-```
-
-You will be prompted to choose the source and the target environment db, and the
-source db will be imported into the target db. Production db is protected, which
-means you cannot overwrite it unless you explicitly override this setting in the
-override file (see "override database.yml")
 
 #### Database Dumps
 
@@ -41,6 +32,24 @@ rake db:dump
 You will be prompted to choose the target dir (defaults to tmp) and the sql file
 name (sql extension will be added automatically). If the file already exists, it
 will be overwritten.
+
+
+#### Database Imports
+
+```ruby
+rake db:import
+```
+
+You will be prompted to choose the source and the target environment db, and the
+source db will be imported into the target db. Production db is protected, which
+means you cannot overwrite it unless you explicitly override this setting in the
+override file (see next section for more info).
+
+#### BEWARE
+
+import process is destructive, be careful on what environment you choose to
+overwite. I take no responsibility for misuse or bugs in the code ;-)
+
 
 #### Override database.yml
 
@@ -70,6 +79,7 @@ Instead, if we want to make the production env writable we should add this:
 production:
   protected: false
 ```
+
 
 ### TODO
 
