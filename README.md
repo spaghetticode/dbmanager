@@ -41,9 +41,10 @@ rake db:import
 ```
 
 You will be prompted to choose the source and the target environment db, and the
-source db will be imported into the target db. Production db is protected, which
-means you cannot overwrite it unless you explicitly override this setting in the
-override file (see next section for more info).
+source db will be imported into the target db. All environments containing the
+string 'production' in their name are protected by default, which means you cannot
+overwrite them unless you explicitly override this setting in the override file
+(see next section for more info).
 
 #### BEWARE
 
