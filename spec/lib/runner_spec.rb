@@ -1,16 +1,10 @@
 require 'spec_helper'
+require 'fixtures/adapter_sample'
 
 module Dbmanager
   describe Runner do
     let(:input) { STDStub.new }
     let(:output) { STDStub.new }
-
-    module M
-      class Connection
-        def initialize(*args)
-        end
-      end
-    end
 
     describe '#initialize' do
       let(:envs) { [mock] }
@@ -19,15 +13,15 @@ module Dbmanager
 
       before do
         YmlParser.stub!(:environments => envs)
-        Runner.any_instance.stub(:set_adapter => M, :set_source => nil)
+        Runner.any_instance.stub(:set_adapter => Adapters::SomeAdapter, :set_source => nil)
       end
 
       it 'sets expected attributes' do
         subject.input.should        == input
         subject.output.should       == output
         subject.environments.should == envs
-        subject.adapter.should      == M
-        subject.source.should be_a(Dbmanager::M::Connection)
+        subject.adapter.should      == Adapters::SomeAdapter
+        subject.source.should be_a(Adapters::SomeAdapter::Connection)
       end
     end
 
@@ -48,8 +42,8 @@ module Dbmanager
         it 'returns an adapter class' do
           envs = {:beta => mock(:adapter => 'Mysql'), :development => mock(:adapter => 'Mysql')}
           subject.instance_variable_set '@environments', envs
-          Dbmanager::Adapters.should_receive(:const_get).and_return(M)
-          subject.set_adapter.should == M
+          Dbmanager::Adapters.should_receive(:const_get).and_return(Adapters::SomeAdapter)
+          subject.set_adapter.should == Adapters::SomeAdapter
         end
       end
     end
@@ -57,7 +51,7 @@ module Dbmanager
     describe '#set_source' do
       subject { Runner.new(input, output) }
 
-      before { Runner.any_instance.stub(:set_adapter => M) }
+      before { Runner.any_instance.stub(:set_adapter => Adapters::SomeAdapter) }
 
       it 'outputs expected message' do
         Runner.any_instance.stub(:get_env => nil)
