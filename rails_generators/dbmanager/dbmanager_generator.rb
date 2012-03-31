@@ -17,7 +17,7 @@ class DbmanagerGenerator < Rails::Generator::Base
   end
 
   def lib_requires
-    "require '#{File.expand_path('../../../lib', __FILE__)}/dbmanager.rb'\n\n"
+    "require 'dbmanager.rb'\n\n"
   end
 
   def print_message
