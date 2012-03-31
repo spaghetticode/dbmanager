@@ -1,5 +1,7 @@
 ## Dbmanager
 
+[![Build Status](https://secure.travis-ci.org/spaghetticode/dbmanager.png)](http://travis-ci.org/spaghetticode/dbmanager)
+
 This gem will add some convenience rake tasks that will help you manage database
 dumps and imports. At the moment only the mysql adapter is available.
 
@@ -12,7 +14,7 @@ limitations you have to run a generator, see the usage section
 Add the gem to your gemfile:
 
 ```ruby
-  gem 'dbmanager', :git => 'git://github.com/spaghetticode/dbmanager.git'
+  gem 'dbmanager'
 ```
 
 If you're on a rails 2.x application you also need to run:
