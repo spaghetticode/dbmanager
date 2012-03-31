@@ -34,6 +34,7 @@ end
 require 'active_support/deprecation'
 require 'active_support/core_ext/module'
 require 'active_support/ordered_hash'
+require 'active_support/core_ext/enumerable'
 
 %w[yml_parser adapters/mysql runner importer dumper].each do |string|
   require File.expand_path "../dbmanager/#{string}", __FILE__
