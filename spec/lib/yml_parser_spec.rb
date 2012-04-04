@@ -46,6 +46,12 @@ module Dbmanager
       it 'removes old unchanged settings' do
         YmlParser.config['beta']['username'].should == 'beta_username'
       end
+
+      context 'when the environment has a ignoretables directive' do
+        it 'should populate ignoretables with the expected array' do
+          YmlParser.config['beta']['ignoretables'].should == ['view0']
+        end
+      end
     end
   end
 end

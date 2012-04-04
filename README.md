@@ -59,6 +59,17 @@ overwite. I take no responsibility for misuse or bugs in the code ;-)
 Since some settings may be specific to the server environment (ie. host could
 be a private ip not reachable from anywhere) you can overwrite the settings in
 database.yml by adding a dbmanager_override.yml file in your rails config dir.
+
+You can also use this file to tell the dumper to ignore certain tables with
+the ignoretables directive:
+
+```yaml
+  beta
+    ignoretables:
+      - users
+      - prods_view
+```
+
 Another use is to set some environments as protected, or vice versa allow to
 overwrite production env.
 For example if we want to override the following setting, and make the database

@@ -19,6 +19,12 @@ module Dbmanager
             end
           end
 
+          describe '#ignore_tables' do
+            it 'returns expected string' do
+              subject.ignore_tables.should == ' --ignore-table=demo_test.view0 --ignore-table=demo_test.view1'
+            end
+          end
+
           describe '#protected?' do
             it 'is false by default' do
               subject.should_not be_protected
@@ -111,11 +117,17 @@ module Dbmanager
       end
 
       describe Dumper do
-        subject { Dumper.new mock(:params => 'source-params'), '/tmp/dump_file.sql' }
+        subject do
+          Dumper.new(
+            mock(:params => 'source-params', :ignore_tables => '--ignore-table=view'),
+            '/tmp/dump_file.sql'
+          )
+        end
 
         describe '#dump_command' do
           it 'returns expected command' do
-            subject.dump_command.should == 'mysqldump source-params > /tmp/dump_file.sql'
+            command =  'mysqldump source-params --ignore-table=view > /tmp/dump_file.sql'
+            subject.dump_command.should == command
           end
         end
       end

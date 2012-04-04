@@ -12,7 +12,8 @@ module Dbmanager
       class Connection
         attr_reader :environment
 
-        delegate :host, :adapter, :database, :username, :password, :port, :encoding, :protected, :name, :to => :environment
+        delegate :host, :adapter, :database, :username, :password, :ignoretables,
+                 :encoding, :protected, :name, :port , :to => :environment
 
         def initialize(environment)
           @environment = environment
@@ -20,6 +21,12 @@ module Dbmanager
 
         def params
           "-u#{username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{database}"
+        end
+
+        def ignore_tables
+          ignoretables.inject('') do |s, view|
+            s << " --ignore-table=#{database}.#{view}"
+          end
         end
 
         def flag(name, flag)
@@ -48,7 +55,7 @@ module Dbmanager
         end
 
         def dump_command
-          "mysqldump #{source.params} > #{filename}"
+          "mysqldump #{source.params} #{source.ignore_tables} > #{filename}"
         end
       end
 
