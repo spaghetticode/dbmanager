@@ -24,8 +24,10 @@ module Dbmanager
         end
 
         def ignore_tables
-          ignoretables.inject('') do |s, view|
-            s << " --ignore-table=#{database}.#{view}"
+          if ignoretables.present?
+            ignoretables.inject('') do |s, view|
+              s << " --ignore-table=#{database}.#{view}"
+            end
           end
         end
 

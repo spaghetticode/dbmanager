@@ -20,8 +20,17 @@ module Dbmanager
           end
 
           describe '#ignore_tables' do
-            it 'returns expected string' do
-              subject.ignore_tables.should == ' --ignore-table=demo_test.view0 --ignore-table=demo_test.view1'
+            context 'when there are tables to be skipped' do
+              it 'returns expected string' do
+                subject.ignore_tables.should == ' --ignore-table=demo_test.view0 --ignore-table=demo_test.view1'
+              end
+            end
+
+            context 'when there are no tables to be skipped' do
+              it 'returns nil' do
+                subject.stub!(:ignoretables => nil)
+                subject.ignore_tables.should be_nil
+              end
             end
           end
 
