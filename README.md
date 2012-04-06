@@ -30,6 +30,7 @@ that will copy the gem rake tasks file into the lib/tasks directory.
 ```ruby
 rake db:dump
 ```
+This rake task will dump the requested db to a file on the local machine.
 
 You will be prompted to choose the target dir (defaults to tmp) and the sql file
 name (sql extension will be added automatically). If the file already exists, it
@@ -41,6 +42,9 @@ will be overwritten.
 ```ruby
 rake db:import
 ```
+
+This task will import a source db to a destination db. Tipical use is to import
+the production db into your development one.
 
 You will be prompted to choose the source and the target environment db, and the
 source db will be imported into the target db. All environments containing the
@@ -64,7 +68,7 @@ You can also use this file to tell the dumper to ignore certain tables with
 the ignoretables directive:
 
 ```yaml
-  beta
+  beta:
     ignoretables:
       - users
       - prods_view
@@ -98,4 +102,3 @@ production:
 ### TODO
 
 * Add more db adapters
-* remove views from mysql dumps so they don't interfere in the import process
