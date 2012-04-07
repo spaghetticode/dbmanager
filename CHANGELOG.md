@@ -1,3 +1,7 @@
+## v0.0.5
+
+* remove exception when dbmanager.yml is empty
+
 ## v0.0.4
 
 * bugfixes

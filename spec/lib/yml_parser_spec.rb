@@ -39,17 +39,26 @@ module Dbmanager
     end
 
     context 'when there is a dbmanager_override file' do
-      it 'overrides regular settings' do
-        YmlParser.config['beta']['host'].should == '345.345.345.345'
+      context 'whe the file is empty' do
+        it 'doesnt raise any error' do
+          YAML.stub!(:load => nil)
+          expect { YmlParser.config }.to_not raise_error
+        end
       end
 
-      it 'removes old unchanged settings' do
-        YmlParser.config['beta']['username'].should == 'beta_username'
-      end
+      context 'when the file is populated' do
+        it 'overrides regular settings' do
+          YmlParser.config['beta']['host'].should == '345.345.345.345'
+        end
 
-      context 'when the environment has a ignoretables directive' do
-        it 'should populate ignoretables with the expected array' do
-          YmlParser.config['beta']['ignoretables'].should == ['view0']
+        it 'removes old unchanged settings' do
+          YmlParser.config['beta']['username'].should == 'beta_username'
+        end
+
+        context 'when the environment has a ignoretables directive' do
+          it 'should populate ignoretables with the expected array' do
+            YmlParser.config['beta']['ignoretables'].should == ['view0']
+          end
         end
       end
     end

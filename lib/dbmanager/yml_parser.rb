@@ -36,7 +36,7 @@ module Dbmanager
     private
 
     def yml_load(path)
-      YAML.load ERB.new(File.read(path)).result
+      YAML.load(ERB.new(File.read(path)).result) || {}
     end
 
     def db_config_file
