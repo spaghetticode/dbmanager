@@ -46,6 +46,14 @@ module Dbmanager
           subject.set_adapter.should == Adapters::SomeAdapter
         end
       end
+
+      context 'when the adapter is mysql2' do
+        it 'returns the correct adapter class' do
+          envs = {:development => mock(:adapter => 'mysql2')}
+          subject.instance_variable_set '@environments', envs
+          subject.set_adapter.should == Adapters::Mysql2
+        end
+      end
     end
 
     describe '#set_source' do

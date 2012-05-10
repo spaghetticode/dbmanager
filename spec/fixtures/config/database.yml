@@ -40,7 +40,6 @@ shop:
   database: demo_shop
   username: demo_username
   password: asdasd
-  adapter: mysql
   port: 3306
   host: 123.123.123.123
   encoding: utf8

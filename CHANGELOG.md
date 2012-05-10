@@ -1,3 +1,7 @@
+## v0.0.6
+
+* handle mysql2 adapter
+
 ## v0.0.5
 
 * remove exception when dbmanager.yml is empty
