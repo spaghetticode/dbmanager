@@ -43,11 +43,11 @@ will be overwritten.
 rake db:import
 ```
 
-This task will import a source db to a destination db. Tipical use is to import
-the production db into your development one.
+**You will be prompted to choose the source and the target environment db**, and the
+source db will be imported into the target db.
 
-You will be prompted to choose the source and the target environment db, and the
-source db will be imported into the target db. All environments containing the
+This task will import a source db to a destination db. Tipical use is to import
+the production db into your development one. All environments containing the
 string 'production' in their name are protected by default, which means you cannot
 overwrite them unless you explicitly override this setting in the override file
 (see next section for more info).
