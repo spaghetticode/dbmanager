@@ -3,47 +3,6 @@ require 'time'
 module Dbmanager
   module Adapters
     module Mysql
-      class EnvironmentProtectedError < StandardError
-        def initialize(message=nil)
-          super message || 'sorry the environment is protected from writing'
-        end
-      end
-
-      class Connection
-        attr_reader :environment
-
-        delegate :host, :adapter, :database, :username, :password, :ignoretables,
-                 :encoding, :protected, :name, :port , :to => :environment
-
-        def initialize(environment)
-          @environment = environment
-        end
-
-        def params
-          "-u#{username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{database}"
-        end
-
-        def ignore_tables
-          if ignoretables.present?
-            ignoretables.inject('') do |s, view|
-              s << " --ignore-table=#{database}.#{view}"
-            end
-          end
-        end
-
-        def flag(name, flag)
-          send(name).present? ? "-#{flag}#{send(name)}" : ''
-        end
-
-        def protected?
-          if name =~ /production/
-            protected != false
-          else
-            protected == true
-          end
-        end
-      end
-
       class Dumper
         attr_reader :source, :filename
 
@@ -57,7 +16,23 @@ module Dbmanager
         end
 
         def dump_command
-          "mysqldump #{source.params} #{source.ignore_tables} > #{filename}"
+          "mysqldump #{params} #{ignore_tables} > #{filename}"
+        end
+
+        def params
+          "-u#{source.username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{source.database}"
+        end
+
+        def ignore_tables
+          if source.ignoretables.present?
+            source.ignoretables.inject('') do |s, view|
+              s << " --ignore-table=#{source.database}.#{view}"
+            end
+          end
+        end
+
+        def flag(name, flag)
+          source.send(name).present? ? "-#{flag}#{source.send(name)}" : ''
         end
       end
 
@@ -72,6 +47,7 @@ module Dbmanager
         def run
           Dumper.new(source, temp_file).run
           Dbmanager.execute! import_command
+        ensure
           remove_temp_file
         end
 
