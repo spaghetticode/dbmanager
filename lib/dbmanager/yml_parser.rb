@@ -1,12 +1,9 @@
 require 'erb'
 require 'yaml'
-require 'ostruct'
 require 'active_support/core_ext/hash'
 
 module Dbmanager
   module YmlParser
-    class Environment < OpenStruct; end
-
     extend self
     attr_writer :config
 

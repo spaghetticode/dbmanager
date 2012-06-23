@@ -1,4 +1,10 @@
 module Dbmanager
+  class EnvironmentProtectedError < StandardError
+    def initialize(message=nil)
+      super message || 'sorry the environment is protected from writing'
+    end
+  end
+
   class AdapterError < StandardError
     def initialize(message=nil)
       super message || 'You cannot mix different adapters!'
@@ -37,6 +43,6 @@ require 'active_support/ordered_hash'
 require 'active_support/core_ext/enumerable'
 require 'active_support/core_ext/object/blank'
 
-%w[yml_parser adapters/mysql adapters/mysql2 runner importer dumper].each do |string|
+%w[environment yml_parser adapters/mysql adapters/mysql2 runner importer dumpable].each do |string|
   require File.expand_path "../dbmanager/#{string}", __FILE__
 end
