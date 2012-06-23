@@ -1,34 +1,37 @@
+# The runner main responsibility is to interact with the user in order to gather
+# the information to accomplish the task.
+#
+# The runner object cannot do much when freshly instantiated, so for each kind
+# of available task there is a corresponding module that can extend the runner
+# so that it can accomplish its goal.
+#
+# Extension modules must define the #run method which contains the specific
+# behaviour they provide.
 module Dbmanager
   class Runner
-    attr_reader :input, :output, :environments, :source, :adapter
+    attr_reader :input, :output, :environments, :source
 
-    def self.run
-      new.run
+    def self.run(module_name)
+      runner = new
+      runner.extend Dbmanager.const_get(module_name.capitalize)
+      runner.run
     end
 
-    def initialize(input, output)
+    def initialize(input=STDIN, output=STDOUT)
       @input        = input
       @output       = output
       @environments = YmlParser.environments
-      @adapter      = set_adapter
-      @source       = adapter::Connection.new(set_source)
+      @source       = get_env
     end
 
-    def set_adapter
-      adapters = environments.map {|name, env| env.adapter}.uniq
-      if adapters.size > 1
-        raise AdapterError
-      else
-        Dbmanager::Adapters.const_get adapters.first.capitalize
-      end
+    def get_env(type='source')
+      output.puts "\nPlease choose #{type} db:\n\n"
+      get_environment
     end
 
-    def set_source
-      output.puts "\nPlease choose source db:\n\n"
-      get_env
-    end
+    private
 
-    def get_env
+    def get_environment
       environments.keys.each_with_index do |name, i|
         output.puts "#{i+1}) #{name}"
       end
