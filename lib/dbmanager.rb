@@ -5,7 +5,7 @@ module Dbmanager
     end
   end
 
-  class AdapterError < StandardError
+  class MixedAdapterError < StandardError
     def initialize(message=nil)
       super message || 'You cannot mix different adapters!'
     end
