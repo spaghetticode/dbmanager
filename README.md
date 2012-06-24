@@ -54,8 +54,8 @@ overwrite them unless you explicitly override this setting in the override file
 
 #### BEWARE
 
-import process is destructive, be careful on what environment you choose to
-overwite. I take no responsibility for misuse or bugs in the code ;-)
+**the import process is destructive** so be careful on which environment you
+choose to overwite. I take no responsibility for misuse or bugs in the code ;-)
 
 
 #### Override database.yml
