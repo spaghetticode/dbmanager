@@ -1,3 +1,10 @@
+## v0.1.0
+
+* major code reorganization
+* will work also when there are multiple adapters in database.yml
+* imports still require same adapter for source and target environments
+* add cucumber tests
+
 ## v0.0.6
 
 * handle mysql2 adapter
