@@ -32,9 +32,9 @@ rake db:dump
 ```
 This rake task will dump the requested db to a file on the local machine.
 
-You will be prompted to choose the target dir (defaults to tmp) and the sql file
-name (sql extension will be added automatically). If the file already exists, it
-will be overwritten.
+You will be prompted to choose the target dir (defaults to *tmp* in the rails
+root) and the sql file name (sql extension will be added automatically). If the
+file already exists, it will be overwritten.
 
 
 #### Database Imports
@@ -47,10 +47,10 @@ This task will import a source db to a destination db. Tipical use is to import
 the production db into your development one.
 
 You will be prompted to choose the source and the target environment db, and the
-source db will be imported into the target db. All environments containing the
-string 'production' in their name are protected by default, which means you cannot
-overwrite them unless you explicitly override this setting in the override file
-(see next section for more info).
+source db will be imported into the target db.
+All environments containing the string 'production' in their name are protected
+by default, which means you cannot overwrite them unless you explicitly override
+this setting in the override file (see the override section for more info).
 
 #### BEWARE
 
@@ -61,7 +61,7 @@ choose to overwite. I take no responsibility for misuse or bugs in the code ;-)
 #### Override database.yml
 
 Since some settings may be specific to the server environment (ie. host could
-be a private ip not reachable from anywhere) you can overwrite the settings in
+be a private ip not reachable from elsewhere) you can override the settings in
 database.yml by adding a dbmanager_override.yml file in your rails config dir.
 
 You can also use this file to tell the dumper to ignore certain tables with
@@ -74,16 +74,17 @@ the ignoretables directive:
       - prods_view
 ```
 
-Another use is to set some environments as protected, or vice versa allow to
-overwrite production env.
-For example if we want to override the following setting, and make the database
+Another use is to set some environment as protected, or on the other hand allow
+overwriting if it's protected by default (ie. production env).
+
+For example if you want to override the following setting, and make the database
 protected from overwriting:
 
 ```yaml
 beta:
   host: 192.168.0.1
 ```
-we should put in dbmanager_override.yml this:
+you should put this in dbmanager_override.yml:
 
 ```yaml
 beta:
@@ -91,7 +92,7 @@ beta:
   protected: true
 ```
 
-Instead, if we want to make the production env writable we should add this:
+Instead, if you want to make the production env writable you should add this:
 
 ```yaml
 production:
