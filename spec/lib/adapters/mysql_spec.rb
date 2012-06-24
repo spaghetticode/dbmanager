@@ -5,37 +5,17 @@ module Dbmanager
     module Mysql
       describe Dumper do
         let :source do
-          mock(
+          Environment.new(
             :username     => 'root',
             :ignoretables => ['a_view', 'another_view'],
             :database     => 'database',
             :password     => 'secret',
             :port         => 42,
             :host         => '0.0.0.0'
-          ).as_null_object # so it behaves precisely like an OpenStruct instance
+          )
         end
 
         subject { Dumper.new(source, '/tmp/dump_file.sql') }
-
-        describe '#flag' do
-          context 'when the source has the requested flag' do
-            it 'returns a string containing the expected flag' do
-              subject.flag(:password, :p).should == '-psecret'
-            end
-          end
-
-          context 'when the source has not the requested flag' do
-            it 'returns an empty string' do
-              subject.flag(:foo, :p).should == ''
-            end
-          end
-        end
-
-        describe '#params' do
-          it 'returns expected string' do
-            subject.params.should == '-uroot -psecret -h0.0.0.0 -P42 database'
-          end
-        end
 
         describe '#ignoretables' do
           context 'when there are tables to be ignored' do
@@ -68,22 +48,19 @@ module Dbmanager
       describe Importer do
         describe 'an importer instance' do
           before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
-          let(:target) { mock :params => 'target-params', :protected? => false, :name => 'beta'  }
-          let(:source) { mock :params => 'source-params', :protected? => false, :name => 'development' }
-          subject { Importer.new source, target  }
+          let(:target)   { Environment.new :protected => false, :name => 'beta', :username => 'beta_user' }
+          let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
+          let(:tmp_file) { '/some/arbitrary/path' }
+          subject        { Importer.new source, target, tmp_file }
 
           it 'has target and source attribute methods' do
-            %w[source target].each { |m| subject.should respond_to(m) }
-          end
-
-          it 'has a timestamped temporary file' do
-            subject.temp_file.should == '/tmp/120323123032'
+            %w[source target tmp_file].each { |m| subject.should respond_to m }
           end
 
           describe '#import_command' do
             context 'when environment is not protected' do
               it 'returns expected command' do
-                subject.import_command.should == 'mysql target-params < /tmp/120323123032'
+                subject.import_command.should == 'mysql -ubeta_user < /some/arbitrary/path'
               end
             end
 
@@ -95,10 +72,10 @@ module Dbmanager
             end
           end
 
-          describe '#remove_temp_file' do
+          describe '#remove_tmp_file' do
             it 'tries to remove the temporary file' do
-              Dbmanager.should_receive(:execute).with("rm #{subject.temp_file}")
-              subject.remove_temp_file
+              Dbmanager.should_receive(:execute).with("rm #{subject.tmp_file}")
+              subject.remove_tmp_file
             end
           end
 
@@ -111,7 +88,7 @@ module Dbmanager
 
             it 'imports the db' do
               Dumper.stub! :new => mock.as_null_object
-              subject.stub!(:remove_temp_file => true)
+              subject.stub!(:remove_tmp_file => true)
               Dbmanager.should_receive(:execute!).with(subject.import_command)
               subject.run
             end

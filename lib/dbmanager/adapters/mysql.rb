@@ -3,7 +3,19 @@ require 'time'
 module Dbmanager
   module Adapters
     module Mysql
+      module Connectable
+        def params(environment)
+          [ "-u#{environment.username}",
+            environment.flag(:password, :p),
+            environment.flag(:host, :h),
+            environment.flag(:port, :P),
+            environment.database
+          ].compact.join(' ')
+        end
+      end
+
       class Dumper
+        include Connectable
         attr_reader :source, :filename
 
         def initialize(source, filename)
@@ -16,16 +28,7 @@ module Dbmanager
         end
 
         def dump_command
-          "mysqldump #{ignoretables} #{params} > #{filename}"
-        end
-
-        def params
-          "-u#{source.username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{source.database}"
-        end
-
-        def flag(attribute, flag)
-          value = source.send attribute
-          value.present? ? "-#{flag}#{value}" : ''
+          "mysqldump #{ignoretables} #{params(source)} > #{filename}"
         end
 
         def ignoretables
@@ -38,34 +41,32 @@ module Dbmanager
       end
 
       class Importer
-        attr_reader :source, :target
+        include Connectable
+        attr_reader :source, :target, :tmp_file
 
-        def initialize(source, target)
-          @source = source
-          @target = target
+        def initialize(source, target, tmp_file)
+          @source   = source
+          @target   = target
+          @tmp_file = tmp_file
         end
 
         def run
-          Dumper.new(source, temp_file).run
+          Dumper.new(source, tmp_file).run
           Dbmanager.execute! import_command
         ensure
-          remove_temp_file
+          remove_tmp_file
         end
 
         def import_command
           unless target.protected?
-            "mysql #{target.params} < #{temp_file}"
+            "mysql #{params(target)} < #{tmp_file}"
           else
             raise EnvironmentProtectedError
           end
         end
 
-        def remove_temp_file
-          Dbmanager.execute "rm #{temp_file}"
-        end
-
-        def temp_file
-          @temp_file ||= "/tmp/#{Time.now.strftime '%y%m%d%H%M%S'}"
+        def remove_tmp_file
+          Dbmanager.execute "rm #{tmp_file}"
         end
       end
     end
