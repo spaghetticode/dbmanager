@@ -1,10 +1,10 @@
 module Dbmanager
-  class Importer < Runner
+  module Importable
     attr_reader :target
 
     def initialize(input=STDIN, output=STDOUT)
       super
-      @target = adapter::Connection.new(set_target)
+      @target = set_env('target')
     end
 
     def run
@@ -14,9 +14,9 @@ module Dbmanager
 
     private
 
-    def set_target
-      output.puts "\nPlease choose target db:\n\n"
-      get_env
+    def adapter
+      raise MixedAdapterError if source.adapter != target.adapter
+      Dbmanager::Adapters.const_get source.adapter.capitalize
     end
   end
 end
