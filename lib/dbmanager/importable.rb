@@ -1,18 +1,18 @@
 module Dbmanager
   module Importable
-    attr_reader :target
-
-    def initialize(input=STDIN, output=STDOUT)
-      super
-      @target = set_env('target')
+    def self.extended(base)
+      class << base; attr_reader :target; end
     end
 
     def run
-      adapter::Importer.new(source, target).run
+      @target = get_env('target')
+      execute_import
       output.puts 'Database Import completed.'
     end
 
-    private
+    def execute_import
+      adapter::Importer.new(source, target).run
+    end
 
     def adapter
       raise MixedAdapterError if source.adapter != target.adapter
