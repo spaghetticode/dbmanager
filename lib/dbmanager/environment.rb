@@ -15,12 +15,23 @@ require 'ostruct'
 # database.yml file.
 module Dbmanager
   class Environment < OpenStruct
+
+    # verifies whether the environment is protected from overwriting or not.
     def protected?
       if name =~ /production/
         protected != false
       else
         protected == true
       end
+    end
+
+    # returns the flag formatted for the requested attribute, if present.
+    # env = Environment.new(:password => 'secret')
+    # env.flag('password', 'p') # => -psecret
+    # env.flag('foo', 'f')      # => nil
+    def flag(attribute, flag)
+      value = send attribute
+      "-#{flag}#{value}" if value.present?
     end
   end
 end

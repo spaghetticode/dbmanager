@@ -2,21 +2,8 @@ require 'spec_helper'
 
 module Dbmanager
   describe Environment do
-    def opts
-      {
-        :name      => 'development',
-        :adapter   => 'mysql',
-        :database  => 'dev_db',
-        :username  => 'user',
-        :password  => 'secret',
-        :port      => 3306,
-        :host      => '123.123.123.123',
-        :encoding  => 'utf8'
-      }
-    end
-
     describe 'a generic environment' do
-      subject { Environment.new(:name => 'beta') }
+      subject { Environment.new :name => 'beta' }
 
       it { subject.should_not be_protected }
 
@@ -36,6 +23,22 @@ module Dbmanager
         before { subject.protected = false }
 
         it { subject.should_not be_protected }
+      end
+    end
+
+    describe '#flag' do
+      context 'when requested attribute is present' do
+        before { subject.stub(:password => 'secret') }
+
+        it 'returns a string containing the expected flag' do
+          subject.flag(:password, :p).should == '-psecret'
+        end
+      end
+
+      context 'when the requested attribute is not present' do
+        it 'returns nil' do
+          subject.flag(:foo, :p).should be_nil
+        end
       end
     end
   end
