@@ -1,145 +1,123 @@
-# require 'spec_helper'
+require 'spec_helper'
 
-# module Dbmanager
-#   module Adapters
-#     module Mysql
-#       describe Connection do
-#         before { stub_rails_root }
+module Dbmanager
+  module Adapters
+    module Mysql
+      describe Dumper do
+        let :source do
+          mock(
+            :username     => 'root',
+            :ignoretables => ['a_view', 'another_view'],
+            :database     => 'database',
+            :password     => 'secret',
+            :port         => 42,
+            :host         => '0.0.0.0'
+          ).as_null_object # so it behaves precisely like an OpenStruct instance
+        end
 
-#         describe 'a mysql adapter instance' do
-#           subject { Connection.new Dbmanager::YmlParser.environments['test'] }
+        subject { Dumper.new(source, '/tmp/dump_file.sql') }
 
-#           it 'delegates to environment object' do
-#             subject.host.should == subject.environment.host
-#           end
+        describe '#flag' do
+          context 'when the source has the requested flag' do
+            it 'returns a string containing the expected flag' do
+              subject.flag(:password, :p).should == '-psecret'
+            end
+          end
 
-#           describe '#params' do
-#             it 'returns expected string' do
-#               subject.params.should == '-uroot -pdevil -h345.345.345.345 -P3306 demo_test'
-#             end
-#           end
+          context 'when the source has not the requested flag' do
+            it 'returns an empty string' do
+              subject.flag(:foo, :p).should == ''
+            end
+          end
+        end
 
-#           describe '#ignore_tables' do
-#             context 'when there are tables to be skipped' do
-#               it 'returns expected string' do
-#                 subject.ignore_tables.should == ' --ignore-table=demo_test.view0 --ignore-table=demo_test.view1'
-#               end
-#             end
+        describe '#params' do
+          it 'returns expected string' do
+            subject.params.should == '-uroot -psecret -h0.0.0.0 -P42 database'
+          end
+        end
 
-#             context 'when there are no tables to be skipped' do
-#               it 'returns nil' do
-#                 subject.stub!(:ignoretables => nil)
-#                 subject.ignore_tables.should be_nil
-#               end
-#             end
-#           end
+        describe '#ignoretables' do
+          context 'when there are tables to be ignored' do
+            it 'returns a string containing ignore-table flags' do
+              string = '--ignore-table=database.a_view --ignore-table=database.another_view'
+              subject.ignoretables.should == string
+            end
+          end
 
-#           describe '#protected?' do
-#             it 'is false by default' do
-#               subject.should_not be_protected
-#             end
+          context 'when there are no tables to be ignored' do
+            it 'returns nil' do
+              source.stub!(:ignoretables => nil)
+              subject.ignoretables.should be_nil
+            end
+          end
+        end
 
-#             context 'when name matches production string' do
-#               it 'is true by default ' do
-#                 subject.stub! :name => 'production-merge'
-#                 subject.should be_protected
-#               end
+        describe '#dump_command' do
+          it 'returns expected command' do
+            command = [
+              'mysqldump --ignore-table=database.a_view',
+              '--ignore-table=database.another_view -uroot',
+              '-psecret -h0.0.0.0 -P42 database > /tmp/dump_file.sql'
+            ].join(' ')
+            subject.dump_command.should == command
+          end
+        end
+      end
 
-#               context 'when protected is set to false' do
-#                 it 'is false' do
-#                   subject.stub! :name => 'production', :protected => false
-#                   subject.should_not be_protected
-#                 end
-#               end
-#             end
-#           end
+      describe Importer do
+        describe 'an importer instance' do
+          before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
+          let(:target) { mock :params => 'target-params', :protected? => false, :name => 'beta'  }
+          let(:source) { mock :params => 'source-params', :protected? => false, :name => 'development' }
+          subject { Importer.new source, target  }
 
-#           describe '#flag' do
-#             context 'when requested flag has a value' do
-#               it 'returns expected string' do
-#                 subject.flag(:password, :p).should == '-pdevil'
-#               end
-#             end
+          it 'has target and source attribute methods' do
+            %w[source target].each { |m| subject.should respond_to(m) }
+          end
 
-#             context 'when requested flag has no value' do
-#               it 'returns a blank string' do
-#                 subject.stub!(:password => nil)
-#                 subject.flag(:password, :p).should == ''
-#               end
-#             end
-#           end
-#         end
-#       end
+          it 'has a timestamped temporary file' do
+            subject.temp_file.should == '/tmp/120323123032'
+          end
 
-#       describe Importer do
-#         describe 'an importer instance' do
-#           before  { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
-#           let(:target) { mock :params => 'target-params', :protected? => false, :name => 'beta'  }
-#           let(:source) { mock :params => 'source-params', :protected? => false, :name => 'development' }
-#           subject { Importer.new source, target  }
+          describe '#import_command' do
+            context 'when environment is not protected' do
+              it 'returns expected command' do
+                subject.import_command.should == 'mysql target-params < /tmp/120323123032'
+              end
+            end
 
-#           it 'has target and source attribute methods' do
-#             %w[source target].each { |m| subject.should respond_to(m) }
-#           end
+            context 'when environment is protected' do
+              it 'raises EnvironmentProtectedError' do
+                target.stub! :protected? => true
+                expect { subject.import_command }.to raise_error(EnvironmentProtectedError)
+              end
+            end
+          end
 
-#           it 'has a timestamped temporary file' do
-#             subject.temp_file.should == '/tmp/120323123032'
-#           end
+          describe '#remove_temp_file' do
+            it 'tries to remove the temporary file' do
+              Dbmanager.should_receive(:execute).with("rm #{subject.temp_file}")
+              subject.remove_temp_file
+            end
+          end
 
-#           describe '#import_command' do
-#             context 'when environment is not protected' do
-#               it 'returns expected command' do
-#                 subject.import_command.should == 'mysql target-params < /tmp/120323123032'
-#               end
-#             end
+          describe '#run' do
+            it 'dumps the db' do
+              Dbmanager.stub!(:execute! => nil)
+              Dumper.should_receive(:new).and_return(mock.as_null_object)
+              subject.run
+            end
 
-#             context 'when environment is protected' do
-#               it 'raises EnvironmentProtectedError' do
-#                 target.stub! :protected? => true
-#                 expect { subject.import_command }.to raise_error(EnvironmentProtectedError)
-#               end
-#             end
-#           end
-
-#           describe '#remove_temp_file' do
-#             it 'tries to remove the temporary file' do
-#               Dbmanager.should_receive(:execute).with("rm #{subject.temp_file}")
-#               subject.remove_temp_file
-#             end
-#           end
-
-#           describe '#run' do
-#             it 'dumps the db' do
-#               Dbmanager.stub!(:execute! => nil)
-#               Dumper.should_receive(:new).and_return(mock.as_null_object)
-#               subject.run
-#             end
-
-#             it 'imports the db' do
-#               Dumper.stub! :new => mock.as_null_object
-#               subject.stub!(:remove_temp_file => true)
-#               Dbmanager.should_receive(:execute!).with(subject.import_command)
-#               subject.run
-#             end
-#           end
-#         end
-#       end
-
-#       describe Dumper do
-#         subject do
-#           Dumper.new(
-#             mock(:params => 'source-params', :ignore_tables => '--ignore-table=view'),
-#             '/tmp/dump_file.sql'
-#           )
-#         end
-
-#         describe '#dump_command' do
-#           it 'returns expected command' do
-#             command =  'mysqldump source-params --ignore-table=view > /tmp/dump_file.sql'
-#             subject.dump_command.should == command
-#           end
-#         end
-#       end
-#     end
-#   end
-# end
+            it 'imports the db' do
+              Dumper.stub! :new => mock.as_null_object
+              subject.stub!(:remove_temp_file => true)
+              Dbmanager.should_receive(:execute!).with(subject.import_command)
+              subject.run
+            end
+          end
+        end
+      end
+    end
+  end
+end

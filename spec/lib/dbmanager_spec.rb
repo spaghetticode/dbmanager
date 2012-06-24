@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Dbmanager do
   describe '#rails_root' do
-    it 'should wrap Rails.root' do
+    it 'wraps Rails.root' do
       Rails = mock unless defined? Rails
       Rails.should_receive :root
       Dbmanager.rails_root
@@ -10,7 +10,7 @@ describe Dbmanager do
   end
 
   describe '#execute' do
-    it 'execute a system command' do
+    it 'executes a system command' do
       Dbmanager.should_receive(:system)
       Dbmanager.execute('echo')
     end

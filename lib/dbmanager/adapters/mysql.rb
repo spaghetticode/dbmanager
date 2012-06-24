@@ -16,23 +16,24 @@ module Dbmanager
         end
 
         def dump_command
-          "mysqldump #{params} #{ignore_tables} > #{filename}"
+          "mysqldump #{ignoretables} #{params} > #{filename}"
         end
 
         def params
           "-u#{source.username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{source.database}"
         end
 
-        def ignore_tables
-          if source.ignoretables.present?
-            source.ignoretables.inject('') do |s, view|
-              s << " --ignore-table=#{source.database}.#{view}"
-            end
-          end
+        def flag(attribute, flag)
+          value = source.send attribute
+          value.present? ? "-#{flag}#{value}" : ''
         end
 
-        def flag(name, flag)
-          source.send(name).present? ? "-#{flag}#{source.send(name)}" : ''
+        def ignoretables
+          if source.ignoretables.present?
+            source.ignoretables.inject [] do |arr, table|
+              arr << "--ignore-table=#{source.database}.#{table}"
+            end.join ' '
+          end
         end
       end
 

@@ -2,12 +2,4 @@ beta:
   host: 345.345.345.345
   protected: true
   ignoretables:
-    - view0
-
-production:
-  protected: false
-
-test:
-  ignoretables:
-    - view0
-    - view1
+    - some_view

@@ -3,16 +3,13 @@ development:
   database: demo_development
   encoding: utf8
   username: root
-  password: devil
-
-  # ale i tuoi settaggi specifici devi metterli in config/dbloginyml, non qui
-  # socket: /Applications/MAMP/tmp/mysql/mysql.sock
+  password: secret
 
 beta:
   adapter: mysql
   database: demo_beta
-  username: beta_username
-  password: asdasd
+  username: beta_user
+  password: beta_pass
   port: 3306
   host: 123.123.123.123
   encoding: utf8
@@ -20,26 +17,21 @@ beta:
 production:
   adapter: mysql
   database: demo_production
-  username: production_username
-  password: asdasd
+  username: prod_user
+  password: prod_pass
   port: 3306
   host: 123.123.123.123
   encoding: utf8
 
 test:
-  adapter: mysql
+  adapter: sqlite3
   database: demo_test
-  encoding: utf8
-  port: 3306
-  host: 345.345.345.345
-  username: root
-  password: devil
 
 shop:
   adapter: mysql
   database: demo_shop
-  username: demo_username
-  password: asdasd
+  username: demo_user
+  password: demo_pass
   port: 3306
   host: 123.123.123.123
   encoding: utf8

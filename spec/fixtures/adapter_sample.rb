@@ -1,10 +1,6 @@
 module Dbmanager
   module Adapters
     module SomeAdapter
-      class Connection
-        def initialize(*args); end
-      end
-
       class Dumper
         def initialize(*args); end
 

@@ -1,5 +1,4 @@
-# just the same as the mysql adapter, but ready for modifications
-
+# just the same as the mysql adapter, but ready for future modifications
 module Dbmanager
   module Adapters
     module Mysql2
