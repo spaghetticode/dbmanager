@@ -1,4 +1,10 @@
-# Teaches how to dump a database to the runner.
+# Extends the runner with database dumping capabilities.
+#
+# The user will be prompted to enter the target filename path, pressing enter
+# will set it to the default which is the value returned by #default_filename.
+#
+# The dump process happens in the #run method, and is eventually delegated to
+# the specific database adapter which must implement the #run method.
 module Dbmanager
   module Dumpable
     def self.extended(base)
