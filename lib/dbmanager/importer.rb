@@ -8,8 +8,12 @@ module Dbmanager
     end
 
     def run
-      adapter::Importer.new(source, target).run
-      output.puts 'Database Import completed.'
+      if target.protected?
+        raise EnvironmentProtectedError
+      else
+        adapter::Importer.new(source, target).run
+        output.puts 'Database Import completed.'
+      end
     end
 
     private

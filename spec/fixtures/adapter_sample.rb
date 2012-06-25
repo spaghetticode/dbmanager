@@ -2,7 +2,13 @@ module Dbmanager
   module Adapters
     module SomeAdapter
       class Connection
+        attr_reader :protected
+
         def initialize(*args); end
+
+        def protected?
+          protected == true
+        end
       end
 
       class Dumper

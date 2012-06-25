@@ -1,4 +1,10 @@
 module Dbmanager
+  class EnvironmentProtectedError < StandardError
+    def initialize(message=nil)
+      super message || 'sorry the environment is protected from writing'
+    end
+  end
+
   class AdapterError < StandardError
     def initialize(message=nil)
       super message || 'You cannot mix different adapters!'

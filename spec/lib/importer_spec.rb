@@ -19,6 +19,13 @@ module Dbmanager
         Adapters::SomeAdapter::Importer.should_receive(:new).and_return(mock(:run => nil))
         subject.run
       end
+
+      context 'when environment is protected' do
+        it 'raises EnvironmentProtectedError' do
+          subject.target.stub! :protected? => true
+          expect { subject.run }.to raise_error(EnvironmentProtectedError)
+        end
+      end
     end
   end
 end

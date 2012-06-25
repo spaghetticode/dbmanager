@@ -3,12 +3,6 @@ require 'time'
 module Dbmanager
   module Adapters
     module Mysql
-      class EnvironmentProtectedError < StandardError
-        def initialize(message=nil)
-          super message || 'sorry the environment is protected from writing'
-        end
-      end
-
       class Connection
         attr_reader :environment
 
@@ -76,11 +70,7 @@ module Dbmanager
         end
 
         def import_command
-          unless target.protected?
-            "mysql #{target.params} < #{temp_file}"
-          else
-            raise EnvironmentProtectedError
-          end
+          "mysql #{target.params} < #{temp_file}"
         end
 
         def remove_temp_file
