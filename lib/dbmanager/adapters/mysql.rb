@@ -3,15 +3,10 @@ require 'time'
 module Dbmanager
   module Adapters
     module Mysql
-      class Connection
-        attr_reader :environment
+      class Connection < Dbmanager::Adapters::Base::Connection
 
         delegate :host, :adapter, :database, :username, :password, :ignoretables,
-                 :encoding, :protected, :name, :port , :to => :environment
-
-        def initialize(environment)
-          @environment = environment
-        end
+                 :encoding, :port , :to => :environment
 
         def params
           "-u#{username} #{flag :password, :p} #{flag :host, :h} #{flag :port, :P} #{database}"
@@ -27,14 +22,6 @@ module Dbmanager
 
         def flag(name, flag)
           send(name).present? ? "-#{flag}#{send(name)}" : ''
-        end
-
-        def protected?
-          if name =~ /production/
-            protected != false
-          else
-            protected == true
-          end
         end
       end
 

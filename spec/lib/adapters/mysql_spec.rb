@@ -34,26 +34,6 @@ module Dbmanager
             end
           end
 
-          describe '#protected?' do
-            it 'is false by default' do
-              subject.should_not be_protected
-            end
-
-            context 'when name matches production string' do
-              it 'is true by default ' do
-                subject.stub! :name => 'production-merge'
-                subject.should be_protected
-              end
-
-              context 'when protected is set to false' do
-                it 'is false' do
-                  subject.stub! :name => 'production', :protected => false
-                  subject.should_not be_protected
-                end
-              end
-            end
-          end
-
           describe '#flag' do
             context 'when requested flag has a value' do
               it 'returns expected string' do
