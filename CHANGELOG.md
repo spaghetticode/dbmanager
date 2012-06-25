@@ -1,3 +1,9 @@
+## v0.1.0
+
+* major code refactoring
+* allow mixed adapters in database.yml
+* import process dumps to rails app tmp directory
+
 ## v0.0.6
 
 * handle mysql2 adapter
