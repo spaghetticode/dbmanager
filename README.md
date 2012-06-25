@@ -32,7 +32,7 @@ rake db:dump
 ```
 This rake task will dump the requested db to a file on the local machine.
 
-You will be prompted to choose the target dir (defaults to *tmp* in the rails
+**You will be prompted to choose the target dir** (defaults to *tmp* in the rails
 root) and the sql file name (sql extension will be added automatically). If the
 file already exists, it will be overwritten.
 
@@ -43,14 +43,14 @@ file already exists, it will be overwritten.
 rake db:import
 ```
 
-This task will import a source db to a destination db. Tipical use is to import
-the production db into your development one.
-
-You will be prompted to choose the source and the target environment db, and the
+**You will be prompted to choose the source and the target environment db**, and the
 source db will be imported into the target db.
-All environments containing the string 'production' in their name are protected
-by default, which means you cannot overwrite them unless you explicitly override
-this setting in the override file (see the override section for more info).
+
+This task will import a source db to a destination db. Tipical use is to import
+the production db into your development one. All environments containing the
+string 'production' in their name are protected by default, which means you cannot
+overwrite them unless you explicitly override this setting in the override file
+(see next section for more info).
 
 #### BEWARE
 
