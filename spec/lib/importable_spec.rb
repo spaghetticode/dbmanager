@@ -20,7 +20,7 @@ module Dbmanager
       before do
         subject.stub(
           :source => mock(:adapter => 'mysql2'),
-          :target => mock(:adapter => 'mysql2')
+          :target => mock(:adapter => 'mysql2', :protected? => false)
         )
       end
 
@@ -49,11 +49,23 @@ module Dbmanager
     end
 
     describe '#run' do
-      it 'outputs expected messages' do
-        subject.stub(:execute_import => nil)
-        subject.run
-        message = 'Database Import completed.'
-        subject.output.content.should include(message)
+      context 'when target is protected' do
+        before { subject.stub :target => mock(:protected? => true) }
+
+        it 'raises EnvironmentProtectedError' do
+          expect { subject.run }.to raise_error(EnvironmentProtectedError)
+        end
+      end
+
+      context 'when target is not protected' do
+        before { subject.stub :target => mock(:protected? => false) }
+
+        it 'outputs expected messages' do
+          subject.stub(:execute_import => nil)
+          subject.run
+          message = 'Database Import completed.'
+          subject.output.content.should include(message)
+        end
       end
     end
 

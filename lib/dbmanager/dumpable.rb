@@ -5,6 +5,7 @@
 #
 # The dump process happens in the #run method, and is eventually delegated to
 # the specific database adapter which must implement the #run method.
+
 module Dbmanager
   module Dumpable
     def self.extended(base)

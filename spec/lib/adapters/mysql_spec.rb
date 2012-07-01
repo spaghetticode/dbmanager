@@ -58,17 +58,8 @@ module Dbmanager
           end
 
           describe '#import_command' do
-            context 'when environment is not protected' do
-              it 'returns expected command' do
-                subject.import_command.should == 'mysql -ubeta_user < /some/arbitrary/path'
-              end
-            end
-
-            context 'when environment is protected' do
-              it 'raises EnvironmentProtectedError' do
-                target.stub! :protected? => true
-                expect { subject.import_command }.to raise_error(EnvironmentProtectedError)
-              end
+            it 'returns expected command' do
+              subject.import_command.should == 'mysql -ubeta_user < /some/arbitrary/path'
             end
           end
 

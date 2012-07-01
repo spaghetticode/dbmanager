@@ -58,11 +58,7 @@ module Dbmanager
         end
 
         def import_command
-          unless target.protected?
-            "mysql #{params(target)} < #{tmp_file}"
-          else
-            raise EnvironmentProtectedError
-          end
+          "mysql #{params(target)} < #{tmp_file}"
         end
 
         def remove_tmp_file
