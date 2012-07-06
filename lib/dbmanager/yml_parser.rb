@@ -5,7 +5,7 @@ require 'active_support/core_ext/hash'
 module Dbmanager
   module YmlParser
     extend self
-    attr_writer :config
+    #attr_writer :config
 
     def config
       @config ||= yml_load(db_config_file).deep_merge(override_config)
@@ -22,15 +22,19 @@ module Dbmanager
 
     def environments
       @environments ||= begin
-        config.select do |key, value|
-          value.has_key?('adapter')
-        end.each_with_object(ActiveSupport::OrderedHash.new) do |arr, hash|
+        yml_envs.each_with_object(ActiveSupport::OrderedHash.new) do |arr, hash|
           hash[arr[0]] = Environment.new arr[1].merge(:name => arr[0])
         end
       end
     end
 
     private
+
+    def yml_envs
+      config.select do |key, value|
+        value.has_key?('adapter')
+      end.sort
+    end
 
     def yml_load(path)
       YAML.load(ERB.new(File.read(path)).result) || {}
