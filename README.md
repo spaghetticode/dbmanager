@@ -1,6 +1,7 @@
 ## Dbmanager
 
 [![Build Status](https://secure.travis-ci.org/spaghetticode/dbmanager.png)](http://travis-ci.org/spaghetticode/dbmanager)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/spaghetticode/dbmanager)
 
 This gem will add some convenience rake tasks that will help you manage database
 dumps and imports. At the moment only the mysql adapter is available.
