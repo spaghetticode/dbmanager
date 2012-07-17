@@ -1,3 +1,12 @@
+## v0.1.3
+
+* environments are now listed sorted
+* raise meaningful error when database.yml contains invalid data
+
+## v0.1.2
+
+* move checks for protected environment from adapters to dumpable and importable modules
+
 ## v0.1.0
 
 * major code refactoring
