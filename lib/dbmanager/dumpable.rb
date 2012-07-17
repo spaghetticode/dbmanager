@@ -13,7 +13,7 @@ module Dbmanager
     end
 
     def run
-      output.puts "\nPlease choose target file (defaults to #{default_filename}):\n\n"
+      output.print "\nPlease choose target file (defaults to #{default_filename}): "
       @filename = get_filename
       dumper.run
       output.puts "Database successfully dumped in #{filename} file."

@@ -5,7 +5,8 @@ require 'active_support/core_ext/hash'
 module Dbmanager
   module YmlParser
     extend self
-    #attr_writer :config
+
+    class YmlInvalidError < StandardError; end
 
     def config
       @config ||= yml_load(db_config_file).deep_merge(override_config)
@@ -22,15 +23,20 @@ module Dbmanager
 
     def environments
       @environments ||= begin
-        yml_envs.each_with_object(ActiveSupport::OrderedHash.new) do |arr, hash|
-          hash[arr[0]] = Environment.new arr[1].merge(:name => arr[0])
+        yml_sorted_envs.each_with_object(ActiveSupport::OrderedHash.new) do |arr, hash|
+          env_name, env_config = arr[0], arr[1]
+          begin
+            hash[env_name] = Environment.new env_config.merge(:name => env_name)
+          rescue NoMethodError
+            raise YmlInvalidError, invalid_message(env_name, env_config)
+          end
         end
       end
     end
 
     private
 
-    def yml_envs
+    def yml_sorted_envs
       config.select do |key, value|
         value.has_key?('adapter')
       end.sort
@@ -46,6 +52,11 @@ module Dbmanager
 
     def db_override_file
       File.join Dbmanager.rails_root, 'config', 'dbmanager_override.yml'
+    end
+
+    def invalid_message(env_name, config)
+      message = "\"#{env_name}\" config seems to be corrupted:\n#{config.inspect}"
+      message << "\nPlease verify database.yml file (original error: #{$!.message})"
     end
   end
 end
