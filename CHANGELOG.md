@@ -1,4 +1,4 @@
-## v0.1.3
+## v0.1.4
 
 * environments are now listed sorted
 * raise meaningful error when database.yml contains invalid data
