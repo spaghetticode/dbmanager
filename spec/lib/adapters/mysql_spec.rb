@@ -63,6 +63,12 @@ module Dbmanager
             end
           end
 
+          describe '#create_db_if_missing_command' do
+            it 'returns expected command' do
+              subject.create_db_if_missing_command.should == 'bundle exec rake db:create RAILS_ENV=beta'
+            end
+          end
+
           describe '#remove_tmp_file' do
             it 'tries to remove the temporary file' do
               Dbmanager.should_receive(:execute).with("rm #{subject.tmp_file}")
@@ -77,10 +83,11 @@ module Dbmanager
               subject.run
             end
 
-            it 'imports the db' do
+            it 'creates the db if missing and then imports the db' do
               Dumper.stub! :new => mock.as_null_object
               subject.stub!(:remove_tmp_file => true)
               Dbmanager.should_receive(:execute!).with(subject.import_command)
+              Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
               subject.run
             end
           end

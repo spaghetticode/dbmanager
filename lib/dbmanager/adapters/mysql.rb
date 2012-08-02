@@ -52,6 +52,7 @@ module Dbmanager
 
         def run
           Dumper.new(source, tmp_file).run
+          Dbmanager.execute! create_db_if_missing_command
           Dbmanager.execute! import_command
         ensure
           remove_tmp_file
@@ -63,6 +64,11 @@ module Dbmanager
 
         def remove_tmp_file
           Dbmanager.execute "rm #{tmp_file}"
+        end
+
+        def create_db_if_missing_command
+          # it is safe to hardcode bundle exec here?
+          "bundle exec rake db:create RAILS_ENV=#{target.name}"
         end
       end
     end
