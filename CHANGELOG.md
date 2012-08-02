@@ -1,3 +1,7 @@
+## v0.1.5
+
+* import task creates the target db if necessary
+
 ## v0.1.4
 
 * environments are now listed sorted
