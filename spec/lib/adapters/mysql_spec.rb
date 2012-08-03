@@ -76,6 +76,18 @@ module Dbmanager
             end
           end
 
+          describe '#bundle' do
+            it 'returns "bundle exec" when bundler is present' do
+              Dbmanager.should_receive(:execute).and_return true
+              subject.bundle.should == 'bundle exec'
+            end
+
+            it 'returns empty string when bundler is missing' do
+              Dbmanager.should_receive(:execute).and_return false
+              subject.bundle.should be_nil
+            end
+          end
+
           describe '#run' do
             it 'dumps the db' do
               Dbmanager.stub!(:execute! => nil)

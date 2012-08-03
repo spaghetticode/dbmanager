@@ -68,7 +68,11 @@ module Dbmanager
 
         def create_db_if_missing_command
           # it is safe to hardcode bundle exec here?
-          "bundle exec rake db:create RAILS_ENV=#{target.name}"
+          "#{bundle} rake db:create RAILS_ENV=#{target.name}"
+        end
+
+        def bundle
+          Dbmanager.execute('which bundle') ? 'bundle exec' : nil
         end
       end
     end
