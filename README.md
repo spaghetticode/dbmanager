@@ -33,7 +33,7 @@ rake db:dump
 ```
 This rake task will dump the requested db to a file on the local machine.
 
-**You will be prompted to choose the target dir** (defaults to *tmp* in the rails
+You will be prompted to choose the target dir (defaults to *tmp* in the rails
 root) and the sql file name (sql extension will be added automatically). If the
 file already exists, it will be overwritten.
 
@@ -44,7 +44,7 @@ file already exists, it will be overwritten.
 rake db:import
 ```
 
-**You will be prompted to choose the source and the target environment db**, and the
+You will be prompted to choose the source and the target environment db, and the
 source db will be imported into the target db.
 
 This task will import a source db to a destination db. Tipical use is to import
@@ -59,14 +59,41 @@ overwrite them unless you explicitly override this setting in the override file
 choose to overwite. I take no responsibility for misuse or bugs in the code ;-)
 
 
-#### Override database.yml
+#### Override database.yml and custom configurations
 
 Since some settings may be specific to the server environment (ie. host could
 be a private ip not reachable from elsewhere) you can override the settings in
 database.yml by adding a dbmanager_override.yml file in your rails config dir.
 
-You can also use this file to tell the dumper to ignore certain tables with
-the ignoretables directive:
+Tipical use is to set some environment as protected, or on the other hand allow
+overwriting if it's protected by default (ie. production env).
+
+If you want to override the following setting in the database.yml file making
+the database protected from overwriting and changing the host address to a
+public one:
+
+```yaml
+beta:
+  host: 192.168.0.1
+```
+you should put this in config/dbmanager_override.yml:
+
+```yaml
+beta:
+  protected: true
+  host: 234.234.234.234
+```
+
+Instead, if you want to make the production env writable you should add this to
+the config/dbmanager_override.yml file:
+
+```yaml
+production:
+  protected: false
+```
+
+On mysql you can instruct the dumper to ignore certain tables using the
+ignoretables directive:
 
 ```yaml
   beta:
@@ -74,32 +101,6 @@ the ignoretables directive:
       - users
       - prods_view
 ```
-
-Another use is to set some environment as protected, or on the other hand allow
-overwriting if it's protected by default (ie. production env).
-
-For example if you want to override the following setting, and make the database
-protected from overwriting:
-
-```yaml
-beta:
-  host: 192.168.0.1
-```
-you should put this in dbmanager_override.yml:
-
-```yaml
-beta:
-  host: 234.234.234.234
-  protected: true
-```
-
-Instead, if you want to make the production env writable you should add this:
-
-```yaml
-production:
-  protected: false
-```
-
 
 ### TODO
 
