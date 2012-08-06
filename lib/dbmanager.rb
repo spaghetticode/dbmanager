@@ -1,4 +1,17 @@
+require 'active_support/deprecation'
+require 'active_support/core_ext/module'
+require 'active_support/ordered_hash'
+require 'active_support/core_ext/enumerable'
+require 'active_support/core_ext/object/blank'
+
 module Dbmanager
+  autoload :Environment, 'dbmanager/environment'
+  autoload :YmlParser,   'dbmanager/yml_parser'
+  autoload :Runner,      'dbmanager/runner'
+  autoload :Importable,  'dbmanager/importable'
+  autoload :Dumpable,    'dbmanager/dumpable'
+  autoload :Adapters,    'dbmanager/adapters'
+
   class EnvironmentProtectedError < StandardError
     def initialize(message=nil)
       super message || 'sorry the environment is protected from writing'
@@ -35,14 +48,4 @@ module Dbmanager
   def execute!(command)
     execute(command) or raise CommandError
   end
-end
-
-require 'active_support/deprecation'
-require 'active_support/core_ext/module'
-require 'active_support/ordered_hash'
-require 'active_support/core_ext/enumerable'
-require 'active_support/core_ext/object/blank'
-
-%w[environment yml_parser adapters/mysql adapters/mysql2 runner importable dumpable].each do |string|
-  require File.expand_path "../dbmanager/#{string}", __FILE__
 end
