@@ -1,9 +1,21 @@
+## v0.1.5
+
+* import task creates the target db if necessary
+
+## v0.1.4
+
+* environments are now listed sorted
+* raise meaningful error when database.yml contains invalid data
+
+## v0.1.2
+
+* move checks for protected environment from adapters to dumpable and importable modules
+
 ## v0.1.0
 
-* major code reorganization
-* will work also when there are multiple adapters in database.yml
-* imports still require same adapter for source and target environments
-* add cucumber tests
+* major code refactoring
+* allow mixed adapters in database.yml
+* import process dumps to rails app tmp directory
 
 ## v0.0.6
 

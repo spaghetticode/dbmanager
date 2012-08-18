@@ -8,6 +8,7 @@
 # The source and target environment must use the same adapter, ie you cannot
 # import a mysql database on a sqlite3 database. For that purpose you can use
 # the taps gem.
+
 module Dbmanager
   module Importable
     def self.extended(base)
@@ -16,8 +17,12 @@ module Dbmanager
 
     def run
       @target = get_env('target')
-      execute_import
-      output.puts 'Database Import completed.'
+      if target.protected?
+        raise EnvironmentProtectedError
+      else
+        execute_import
+        output.puts 'Database Import completed.'
+      end
     end
 
     def execute_import

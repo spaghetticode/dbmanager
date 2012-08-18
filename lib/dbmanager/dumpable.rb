@@ -5,6 +5,7 @@
 #
 # The dump process happens in the #run method, and is eventually delegated to
 # the specific database adapter which must implement the #run method.
+
 module Dbmanager
   module Dumpable
     def self.extended(base)
@@ -12,7 +13,7 @@ module Dbmanager
     end
 
     def run
-      output.puts "\nPlease choose target file (defaults to #{default_filename}):\n\n"
+      output.print "\nPlease choose target file (defaults to #{default_filename}): "
       @filename = get_filename
       dumper.run
       output.puts "Database successfully dumped in #{filename} file."

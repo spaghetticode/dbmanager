@@ -4,7 +4,7 @@ module Dbmanager
   describe YmlParser do
     before do
       stub_rails_root
-      YmlParser.config = nil
+      YmlParser.instance_eval { @config = nil }
     end
 
     describe '#config' do

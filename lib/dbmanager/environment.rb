@@ -1,4 +1,3 @@
-require 'ostruct'
 # An +Environment+ object is created for each environment listed in the
 # database.yml file.
 #
@@ -13,6 +12,9 @@ require 'ostruct'
 # If on the other hand you want to be free to overwrite the production db
 # you need to explicitly set +protected: false+ to that environment in the
 # database.yml file.
+
+require 'ostruct'
+
 module Dbmanager
   class Environment < OpenStruct
 

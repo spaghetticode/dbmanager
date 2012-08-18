@@ -7,6 +7,7 @@
 #
 # Extension modules must define the #run method which contains the specific
 # behaviour they provide.
+
 module Dbmanager
   class Runner
     attr_reader :input, :output, :environments, :source

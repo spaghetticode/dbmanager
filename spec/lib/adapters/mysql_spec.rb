@@ -58,37 +58,47 @@ module Dbmanager
           end
 
           describe '#import_command' do
-            context 'when environment is not protected' do
-              it 'returns expected command' do
-                subject.import_command.should == 'mysql -ubeta_user < /some/arbitrary/path'
-              end
+            it 'returns expected command' do
+              subject.import_command.should == 'mysql -ubeta_user < /some/arbitrary/path'
             end
+          end
 
-            context 'when environment is protected' do
-              it 'raises EnvironmentProtectedError' do
-                target.stub! :protected? => true
-                expect { subject.import_command }.to raise_error(EnvironmentProtectedError)
-              end
+          describe '#create_db_if_missing_command' do
+            it 'returns expected command' do
+              subject.create_db_if_missing_command.should == 'bundle exec rake db:create RAILS_ENV=beta'
             end
           end
 
           describe '#remove_tmp_file' do
             it 'tries to remove the temporary file' do
-              Dbmanager.should_receive(:execute).with("rm #{subject.tmp_file}")
+              Dbmanager.should_receive(:execute).with('rm /some/arbitrary/path')
               subject.remove_tmp_file
             end
           end
 
+          describe '#bundle' do
+            it 'returns "bundle exec" when bundler is present' do
+              Dbmanager.should_receive(:execute).and_return true
+              subject.bundle.should == 'bundle exec'
+            end
+
+            it 'returns nil when bundler is missing' do
+              Dbmanager.should_receive(:execute).and_return false
+              subject.bundle.should be_nil
+            end
+          end
+
           describe '#run' do
-            it 'dumps the db' do
+            it 'create ad Dumper that will dump the db' do
               Dbmanager.stub!(:execute! => nil)
               Dumper.should_receive(:new).and_return(mock.as_null_object)
               subject.run
             end
 
-            it 'imports the db' do
+            it 'creates the db if missing and then imports the db' do
               Dumper.stub! :new => mock.as_null_object
               subject.stub!(:remove_tmp_file => true)
+              Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
               Dbmanager.should_receive(:execute!).with(subject.import_command)
               subject.run
             end
