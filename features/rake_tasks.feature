@@ -1,12 +1,12 @@
 Feature: Dbmanager rake task listed in rake -T
  As a dbmanager gem user
   I want the dbmanager rake tasks to be added to my application
-  so that I can to execute them
+  so that I can to execute them.
 
-    The dbmanager gem adds 2 rake tasks to your application:
+    Dbmanager gem adds 2 rake tasks to your application:
 
-      db:dump that interactively dumps the content of a db
-      db:import that interactively import a db into another
+      **db:dump** that interactively dumps the content of a db
+      **db:import** that interactively import a db into another
 
 
 Scenario: db:dump task

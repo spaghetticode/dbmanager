@@ -102,6 +102,13 @@ ignoretables directive:
       - prods_view
 ```
 
+## Tests
+
+run rspec tests: ```rake```
+
+run cucumber tests: ```cucumber```
+
+
 ### TODO
 
 * Add more db adapters
