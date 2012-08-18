@@ -71,7 +71,7 @@ module Dbmanager
 
           describe '#remove_tmp_file' do
             it 'tries to remove the temporary file' do
-              Dbmanager.should_receive(:execute).with("rm #{subject.tmp_file}")
+              Dbmanager.should_receive(:execute).with('rm /some/arbitrary/path')
               subject.remove_tmp_file
             end
           end
@@ -82,14 +82,14 @@ module Dbmanager
               subject.bundle.should == 'bundle exec'
             end
 
-            it 'returns empty string when bundler is missing' do
+            it 'returns nil when bundler is missing' do
               Dbmanager.should_receive(:execute).and_return false
               subject.bundle.should be_nil
             end
           end
 
           describe '#run' do
-            it 'dumps the db' do
+            it 'create ad Dumper that will dump the db' do
               Dbmanager.stub!(:execute! => nil)
               Dumper.should_receive(:new).and_return(mock.as_null_object)
               subject.run
@@ -98,8 +98,8 @@ module Dbmanager
             it 'creates the db if missing and then imports the db' do
               Dumper.stub! :new => mock.as_null_object
               subject.stub!(:remove_tmp_file => true)
-              Dbmanager.should_receive(:execute!).with(subject.import_command)
               Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
+              Dbmanager.should_receive(:execute!).with(subject.import_command)
               subject.run
             end
           end
