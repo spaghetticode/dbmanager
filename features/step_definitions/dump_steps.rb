@@ -9,6 +9,6 @@ end
 Then /^the dump file should include expected schema$/ do
   dump = File.read('tmp/dbmanager_dummy_dev.sql')
   File.open('db/structure.sql').each do |line|
-    dump.should include(line)
+    dump.should include(line) unless line =~ /INSERT INTO schema_migrations/
   end
 end

@@ -48,12 +48,12 @@ module Dbmanager
       describe Importer do
         describe 'an importer instance' do
           before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
-          let(:target)   { Environment.new :protected => false, :name => 'beta', :username => 'beta_user' }
           let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
+          let(:target)   { Environment.new :protected => false, :name => 'beta', :username => 'beta_user' }
           let(:tmp_file) { '/some/arbitrary/path' }
           subject        { Importer.new source, target, tmp_file }
 
-          it 'has target and source attribute methods' do
+          it 'has target, source and tmp_file attribute methods' do
             %w[source target tmp_file].each { |m| subject.should respond_to m }
           end
 
@@ -96,7 +96,7 @@ module Dbmanager
             end
 
             it 'creates the db if missing and then imports the db' do
-              Dumper.stub! :new => mock.as_null_object
+              Dumper.stub!(:new => mock.as_null_object)
               subject.stub!(:remove_tmp_file => true)
               Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
               Dbmanager.should_receive(:execute!).with(subject.import_command)
