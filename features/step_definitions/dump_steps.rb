@@ -2,7 +2,7 @@ When /^I interactively execute "(.*?)"$/ do |command|
   system command
 end
 
-Then /^an sql dump should be created in "(.*?)"$/ do |path|
+Then /^an? sql dump should be created in "(.*?)"$/ do |path|
   File.file?(path).should be_true
 end
 

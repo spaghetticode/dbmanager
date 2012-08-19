@@ -9,3 +9,10 @@ end
 Then /^I should see "(.*?)" among the listed tasks$/ do |task_name|
   @output.should include(task_name)
 end
+
+When /^I run the task "(.*?)" with input "(.*?)"$/ do |task, params|
+  File.open STDIN_STUB, 'w' do |f|
+    params.split(' ').each {|param| f.puts param}
+  end
+  step "I execute \"rake #{task} < #{STDIN_STUB}\""
+end

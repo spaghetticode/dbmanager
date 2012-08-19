@@ -16,3 +16,6 @@ db/structure.sql
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore STDIN stub file, created by cucumber
+STDIN_stub
