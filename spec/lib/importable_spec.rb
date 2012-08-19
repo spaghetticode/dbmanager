@@ -72,7 +72,7 @@ module Dbmanager
     describe '#tmp_file' do
       it 'includes expected path' do
         Time.stub :now => Time.parse('1974/09/20 14:12:33')
-        subject.tmp_file.should =~ Regexp.new('dbmanager/spec/fixtures/tmp/740920141233')
+        subject.tmp_file.should =~ Regexp.new('dbmanager/spec/fixtures/rails/tmp/740920141233')
       end
     end
   end

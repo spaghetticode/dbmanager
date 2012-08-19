@@ -11,5 +11,5 @@ def fixture_path
 end
 
 def stub_rails_root
-  Dbmanager.stub! :rails_root => fixture_path
+  Dbmanager.stub! :rails_root => "#{fixture_path}/rails"
 end
