@@ -102,6 +102,13 @@ ignoretables directive:
       - prods_view
 ```
 
+
+## Documentation
+
+You can find some more documentation on the workings of the gem on relish:
+https://www.relishapp.com/spaghetticode/dbmanager/docs
+
+
 ## Tests
 
 run rspec tests: ```rake```
