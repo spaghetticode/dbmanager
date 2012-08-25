@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["andrea longhi"]
   s.email       = ["andrea.longhi@mikamai.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/spaghetticode/dbmanager"
   s.summary     = %q{database manager}
   s.description = %q{helps manage db dumps and imports via rake tasks}
 
