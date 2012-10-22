@@ -1,3 +1,7 @@
+## v0.1.6
+
+* close issue #5 (should not require 'dbmanager.rb' in the rake file)
+
 ## v0.1.5
 
 * import task creates the target db if necessary
