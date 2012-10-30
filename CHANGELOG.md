@@ -1,3 +1,7 @@
+## v0.1.7
+
+* merge pull request from Racko (add quotes to file names)
+
 ## v0.1.6
 
 * close issue #5 (should not require 'dbmanager.rb' in the rake file)
