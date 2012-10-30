@@ -38,7 +38,7 @@ module Dbmanager
             command = [
               'mysqldump --ignore-table=database.a_view',
               '--ignore-table=database.another_view -uroot',
-              '-psecret -h0.0.0.0 -P42 database > /tmp/dump_file.sql'
+              '-psecret -h0.0.0.0 -P42 database > \'/tmp/dump_file.sql\''
             ].join(' ')
             subject.dump_command.should == command
           end
@@ -59,7 +59,7 @@ module Dbmanager
 
           describe '#import_command' do
             it 'returns expected command' do
-              subject.import_command.should == 'mysql -ubeta_user < /some/arbitrary/path'
+              subject.import_command.should == 'mysql -ubeta_user < \'/some/arbitrary/path\''
             end
           end
 
@@ -71,7 +71,7 @@ module Dbmanager
 
           describe '#remove_tmp_file' do
             it 'tries to remove the temporary file' do
-              Dbmanager.should_receive(:execute).with('rm /some/arbitrary/path')
+              Dbmanager.should_receive(:execute).with('rm \'/some/arbitrary/path\'')
               subject.remove_tmp_file
             end
           end
