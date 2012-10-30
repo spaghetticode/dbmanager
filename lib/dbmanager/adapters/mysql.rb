@@ -28,7 +28,7 @@ module Dbmanager
         end
 
         def dump_command
-          "mysqldump #{ignoretables} #{params(source)} > #{filename}"
+          "mysqldump #{ignoretables} #{params(source)} > '#{filename}'"
         end
 
         def ignoretables
@@ -59,11 +59,11 @@ module Dbmanager
         end
 
         def import_command
-          "mysql #{params(target)} < #{tmp_file}"
+          "mysql #{params(target)} < '#{tmp_file}'"
         end
 
         def remove_tmp_file
-          Dbmanager.execute "rm #{tmp_file}"
+          Dbmanager.execute "rm '#{tmp_file}'"
         end
 
         def create_db_if_missing_command
