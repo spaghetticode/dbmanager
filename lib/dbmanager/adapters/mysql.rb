@@ -40,18 +40,16 @@ module Dbmanager
         end
       end
 
-      class Importer
+      class Loader
         include Connectable
-        attr_reader :source, :target, :tmp_file
+        attr_reader :target, :tmp_file
 
-        def initialize(source, target, tmp_file)
-          @source   = source
+        def initialize(target, tmp_file)
           @target   = target
           @tmp_file = tmp_file
         end
 
         def run
-          Dumper.new(source, tmp_file).run
           Dbmanager.execute! create_db_if_missing_command
           Dbmanager.execute! import_command
         ensure
@@ -73,6 +71,22 @@ module Dbmanager
 
         def bundle
           Dbmanager.execute('which bundle') ? 'bundle exec' : nil
+        end
+      end
+
+      class Importer
+        include Connectable
+        attr_reader :source, :target, :tmp_file
+
+        def initialize(source, target, tmp_file)
+          @source   = source
+          @target   = target
+          @tmp_file = tmp_file
+        end
+
+        def run
+          Dumper.new(source, tmp_file).run
+          Loader.new(target, tmp_file).run
         end
       end
     end

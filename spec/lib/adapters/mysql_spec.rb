@@ -45,16 +45,16 @@ module Dbmanager
         end
       end
 
-      describe Importer do
+      describe Loader do
         describe 'an importer instance' do
           before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
           let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
           let(:target)   { Environment.new :protected => false, :name => 'beta', :username => 'beta_user' }
           let(:tmp_file) { '/some/arbitrary/path' }
-          subject        { Importer.new source, target, tmp_file }
+          subject        { Loader.new target, tmp_file }
 
-          it 'has target, source and tmp_file attribute methods' do
-            %w[source target tmp_file].each { |m| subject.should respond_to m }
+          it 'has target and tmp_file attribute methods' do
+            %w[target tmp_file].each { |m| subject.should respond_to m }
           end
 
           describe '#import_command' do
@@ -89,17 +89,38 @@ module Dbmanager
           end
 
           describe '#run' do
+            it 'creates the db if missing and then imports the db' do
+              subject.stub!(:remove_tmp_file => true)
+              Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
+              Dbmanager.should_receive(:execute!).with(subject.import_command)
+              subject.run
+            end
+          end
+        end
+      end
+
+      describe Importer do
+        describe 'an importer instance' do
+          before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
+          let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
+          let(:target)   { Environment.new :protected => false, :name => 'beta', :username => 'beta_user' }
+          let(:tmp_file) { '/some/arbitrary/path' }
+          subject        { Importer.new source, target, tmp_file }
+
+          it 'has target, source and tmp_file attribute methods' do
+            %w[source target tmp_file].each { |m| subject.should respond_to m }
+          end
+
+          describe '#run' do
             it 'create ad Dumper that will dump the db' do
               Dbmanager.stub!(:execute! => nil)
               Dumper.should_receive(:new).and_return(mock.as_null_object)
               subject.run
             end
 
-            it 'creates the db if missing and then imports the db' do
-              Dumper.stub!(:new => mock.as_null_object)
-              subject.stub!(:remove_tmp_file => true)
-              Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
-              Dbmanager.should_receive(:execute!).with(subject.import_command)
+            it 'create ad Loader that will dump the db' do
+              Dbmanager.stub!(:execute! => nil)
+              Loader.should_receive(:new).and_return(mock.as_null_object)
               subject.run
             end
           end
