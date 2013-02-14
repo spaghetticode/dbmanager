@@ -13,8 +13,8 @@ module Dbmanager
     end
 
     def run
-      output.print "\nPlease choose target file (defaults to #{default_filename}): "
-      @filename = get_filename
+      self.filename = get_filename('target', default_filename)
+
       dumper.run
       output.puts "Database successfully dumped in #{filename} file."
     end
@@ -31,11 +31,6 @@ module Dbmanager
 
     def default_filename
       Dbmanager.rails_root.join "tmp/#{source.database}.sql"
-    end
-
-    def get_filename
-      filename = input.gets.chomp
-      filename.blank? ? default_filename : Dbmanager.rails_root.join(filename)
     end
   end
 end

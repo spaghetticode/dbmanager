@@ -30,6 +30,13 @@ module Dbmanager
       get_environment
     end
 
+    def get_filename type, default_filename
+      output.print "\nPlease choose #{type} file (defaults to #{default_filename}): "
+      filename = input.gets.chomp
+      filename.blank? ? default_filename : Dbmanager.rails_root.join(filename)
+    end
+
+
     private
 
     def get_environment
