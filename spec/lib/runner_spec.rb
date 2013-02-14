@@ -6,38 +6,39 @@ module Dbmanager
     let(:envs)   { [mock] }
     let(:input)  { STDStub.new }
     let(:output) { STDStub.new }
+    let(:klass)  { Class.new { include Runner} }
+    subject { klass.new(input, output) }
 
     before do
       YmlParser.stub!(:environments => envs)
-      Runner.any_instance.stub(:get_environment => envs.first)
+      subject.stub(:get_environment => envs.first)
     end
 
     describe '#initialize' do
-      subject { Runner.new(input, output) }
-
       it 'sets expected attributes' do
         subject.input.should        == input
         subject.output.should       == output
         subject.environments.should == envs
-        subject.source.should       == envs.first
       end
     end
 
     describe '#get_env' do
-      subject { Runner.new(input, output) }
-
-      it 'outputs default message' do
-        subject.get_env
-        output.content.should include('Please choose source db:')
-      end
-
       it 'outputs expected message' do
         subject.get_env('target')
         output.content.should include('Please choose target db:')
       end
 
       it 'returns the chosen environment' do
-        subject.get_env.should == envs.first
+        subject.get_env('target').should == envs.first
+      end
+    end
+
+    describe '#get_filename' do
+      before { subject.stub(:input => input, :output => output) }
+
+      it 'outputs expected message' do
+        subject.get_filename('target', 'defaultname')
+        output.content.should include('Please choose target file (defaults to defaultname):')
       end
     end
   end

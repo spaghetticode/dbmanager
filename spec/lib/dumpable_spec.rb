@@ -2,31 +2,22 @@ require 'spec_helper'
 
 module Dbmanager
   describe Dumpable do
-    subject do
-      Object.new.tap {|o| o.extend Dumpable}
-    end
-
-    before do
-      subject.stub :output => STDStub.new, :input => STDStub.new
-    end
+    subject { Dumpable.new }
+    before { subject.stub :output => STDStub.new, :input => STDStub.new }
 
     describe '#run' do
       before do
         subject.stub(
+          :get_env          => 'test',
           :get_filename     => 'filename',
           :default_filename => 'defaultname',
-          :dumper           => mock.as_null_object
+          :dumper           => mock.as_null_object,
         )
       end
 
       it 'sends expected output' do
         subject.run
-        [
-          'Please choose target file (defaults to defaultname):',
-          'Database successfully dumped in filename file.'
-        ].each do |message|
-          subject.output.content.should include(message)
-        end
+        subject.output.content.should include('Database successfully dumped in filename file.')
       end
 
       it 'delegates the actual dumping to the dumper' do

@@ -2,9 +2,7 @@ require 'spec_helper'
 
 module Dbmanager
   describe Importable do
-    subject do
-      Object.new.tap {|o| o.extend Importable}
-    end
+    subject { Importable.new }
 
     before do
       stub_rails_root
