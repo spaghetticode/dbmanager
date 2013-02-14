@@ -70,7 +70,7 @@ module Dbmanager
         end
 
         def bundle
-          Dbmanager.execute('which bundle') ? 'bundle exec' : nil
+          Dbmanager.execute('which bundle > /dev/null') ? 'bundle exec' : nil
         end
       end
 
