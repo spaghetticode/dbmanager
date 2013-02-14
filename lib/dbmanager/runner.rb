@@ -10,7 +10,7 @@
 
 module Dbmanager
   module Runner
-    attr_reader :input, :output
+    attr_reader :input, :output, :environments
 
     def self.run(module_name)
       runner_klass = Dbmanager.const_get(module_name.to_s.capitalize)
@@ -21,10 +21,7 @@ module Dbmanager
     def initialize(input=STDIN, output=STDOUT)
       @input        = input
       @output       = output
-    end
-
-    def environments
-      @environments ||= YmlParser.environments
+      @environments = YmlParser.environments
     end
 
     def get_env(type)
