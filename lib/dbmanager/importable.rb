@@ -16,12 +16,11 @@ module Dbmanager
     def run
       self.source = get_env('source')
       self.target = get_env('target')
-      if target.protected?
-        raise EnvironmentProtectedError
-      else
-        execute_import
-        output.puts 'Database Import completed.'
-      end
+
+      raise EnvironmentProtectedError if target.protected?
+
+      execute_import
+      output.puts 'Database Import completed.'
     end
 
     attr_accessor :target, :source
