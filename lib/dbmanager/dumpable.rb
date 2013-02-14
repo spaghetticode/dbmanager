@@ -10,13 +10,14 @@ module Dbmanager
   module Dumpable
 
     def run
+      self.source = get_env('source')
       self.filename = get_filename('target', default_filename)
 
       dumper.run
       output.puts "Database successfully dumped in #{filename} file."
     end
 
-    attr_accessor :filename
+    attr_accessor :filename, :source
 
 
     private

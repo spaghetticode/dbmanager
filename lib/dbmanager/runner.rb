@@ -10,7 +10,7 @@
 
 module Dbmanager
   class Runner
-    attr_reader :input, :output, :source
+    attr_reader :input, :output
 
     def self.run(module_name)
       runner = new
@@ -21,14 +21,13 @@ module Dbmanager
     def initialize(input=STDIN, output=STDOUT)
       @input        = input
       @output       = output
-      @source       = get_env
     end
 
     def environments
       @environments ||= YmlParser.environments
     end
 
-    def get_env(type='source')
+    def get_env(type)
       output.puts "\nPlease choose #{type} db:\n\n"
       get_environment
     end

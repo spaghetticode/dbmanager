@@ -13,7 +13,8 @@ module Dbmanager
   module Importable
 
     def run
-      @target = get_env('target')
+      self.source = get_env('source')
+      self.target = get_env('target')
       if target.protected?
         raise EnvironmentProtectedError
       else
@@ -22,7 +23,7 @@ module Dbmanager
       end
     end
 
-    attr_accessor :target
+    attr_accessor :target, :source
 
     def execute_import
       adapter::Importer.new(source, target, tmp_file).run
