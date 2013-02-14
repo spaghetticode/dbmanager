@@ -20,9 +20,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency 'activesupport'
-  s.add_dependency 'rails', '>= 2.3'
 
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec', '~> 2.10'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'cucumber'
   s.add_development_dependency 'guard-rspec'
