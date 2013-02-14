@@ -20,11 +20,11 @@ module Dbmanager
     end
 
     def adapter
-      Dbmanager::Adapters.const_get source.adapter.capitalize
+      Dbmanager::Adapters.const_get target.adapter.capitalize
     end
 
     def default_filename
-      Dbmanager.rails_root.join "tmp/#{source.database}.sql"
+      Dbmanager.rails_root.join "tmp/#{target.database}.sql"
     end
   end
 end
