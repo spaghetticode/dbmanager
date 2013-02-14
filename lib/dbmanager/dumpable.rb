@@ -8,9 +8,6 @@
 
 module Dbmanager
   module Dumpable
-    def self.extended(base)
-      class << base; attr_accessor :filename; end
-    end
 
     def run
       self.filename = get_filename('target', default_filename)
@@ -18,6 +15,9 @@ module Dbmanager
       dumper.run
       output.puts "Database successfully dumped in #{filename} file."
     end
+
+    attr_accessor :filename
+
 
     private
 

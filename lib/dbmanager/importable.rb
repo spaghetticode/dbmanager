@@ -11,9 +11,6 @@
 
 module Dbmanager
   module Importable
-    def self.extended(base)
-      class << base; attr_reader :target; end
-    end
 
     def run
       @target = get_env('target')
@@ -24,6 +21,8 @@ module Dbmanager
         output.puts 'Database Import completed.'
       end
     end
+
+    attr_accessor :target
 
     def execute_import
       adapter::Importer.new(source, target, tmp_file).run
