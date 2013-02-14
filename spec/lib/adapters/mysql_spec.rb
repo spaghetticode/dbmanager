@@ -4,6 +4,8 @@ module Dbmanager
   module Adapters
     module Mysql
       describe Dumper do
+        before { Dbmanager.stub :output => STDStub.new }
+
         let :source do
           Environment.new(
             :username     => 'root',
@@ -46,6 +48,8 @@ module Dbmanager
       end
 
       describe Loader do
+        before { Dbmanager.stub :output => STDStub.new }
+
         describe 'an importer instance' do
           before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
           let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
@@ -100,6 +104,8 @@ module Dbmanager
       end
 
       describe Importer do
+        before { Dbmanager.stub :output => STDStub.new }
+
         describe 'an importer instance' do
           before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
           let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
