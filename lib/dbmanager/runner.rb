@@ -34,7 +34,7 @@ module Dbmanager
 
     def get_filename type, default_filename
       output.print "\nPlease choose #{type} file (defaults to #{default_filename}): "
-      filename = input.gets.chomp
+      filename = get_input
       filename.blank? ? default_filename : Dbmanager.rails_root.join(filename)
     end
 
@@ -48,9 +48,13 @@ module Dbmanager
       output.puts
       pos = ''
       until (1..environments.size).include? pos
-        pos = input.gets.chomp.to_i
+        pos = get_input.to_i
       end
       environments.values[pos-1]
+    end
+
+    def get_input
+      input.gets.to_s.strip
     end
   end
 end
