@@ -52,16 +52,10 @@ module Dbmanager
         def run
           Dbmanager.execute! create_db_if_missing_command
           Dbmanager.execute! import_command
-        ensure
-          remove_tmp_file
         end
 
         def import_command
           "mysql #{params(target)} < '#{tmp_file}'"
-        end
-
-        def remove_tmp_file
-          Dbmanager.execute "rm '#{tmp_file}'"
         end
 
         def create_db_if_missing_command
@@ -87,6 +81,12 @@ module Dbmanager
         def run
           Dumper.new(source, tmp_file).run
           Loader.new(target, tmp_file).run
+        ensure
+          remove_tmp_file
+        end
+
+        def remove_tmp_file
+          Dbmanager.execute "rm '#{tmp_file}'"
         end
       end
     end
