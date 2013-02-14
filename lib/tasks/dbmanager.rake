@@ -5,9 +5,14 @@ namespace :db do
     Dbmanager::Runner.run('importable')
   end
 
-  desc 'dump specific environment db data in tmp directory'
+  desc 'dump specific environment db data to a file'
   task :dump do
     require 'dbmanager'
     Dbmanager::Runner.run('dumpable')
+
+  desc 'load specific environment db data from a file'
+  task :load do
+    require 'dbmanager'
+    Dbmanager::Runner.run('loadable')
   end
 end
