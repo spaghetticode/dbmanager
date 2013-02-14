@@ -10,7 +10,8 @@
 # the taps gem.
 
 module Dbmanager
-  module Importable
+  class Importable
+    include Runner
 
     def run
       self.source = get_env('source')

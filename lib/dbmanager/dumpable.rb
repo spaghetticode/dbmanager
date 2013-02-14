@@ -7,7 +7,8 @@
 # the specific database adapter which must implement the #run method.
 
 module Dbmanager
-  module Dumpable
+  class Dumpable
+    include Runner
 
     def run
       self.source = get_env('source')

@@ -9,12 +9,12 @@
 # behaviour they provide.
 
 module Dbmanager
-  class Runner
+  module Runner
     attr_reader :input, :output
 
     def self.run(module_name)
-      runner = new
-      runner.extend Dbmanager.const_get(module_name.capitalize)
+      runner_klass = Dbmanager.const_get(module_name.to_s.capitalize)
+      runner = runner_klass.new
       runner.run
     end
 
