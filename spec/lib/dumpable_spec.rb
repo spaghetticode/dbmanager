@@ -3,7 +3,11 @@ require 'spec_helper'
 module Dbmanager
   describe Dumpable do
     subject { Dumpable.new }
-    before { subject.stub :output => STDStub.new, :input => STDStub.new }
+
+    before do
+      stub_rails_root
+      subject.stub :output => STDStub.new, :input => STDStub.new
+    end
 
     describe '#run' do
       before do

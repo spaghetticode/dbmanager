@@ -73,13 +73,6 @@ module Dbmanager
             end
           end
 
-          describe '#remove_tmp_file' do
-            it 'tries to remove the temporary file' do
-              Dbmanager.should_receive(:execute).with('rm \'/some/arbitrary/path\'')
-              subject.remove_tmp_file
-            end
-          end
-
           describe '#bundle' do
             it 'returns "bundle exec" when bundler is present' do
               Dbmanager.should_receive(:execute).and_return true
@@ -104,17 +97,31 @@ module Dbmanager
       end
 
       describe Importer do
+        def environment(opts={})
+          opts = {:protected => false}.merge(opts)
+          Environment.new opts
+        end
+
         before { Dbmanager.stub :output => STDStub.new }
 
         describe 'an importer instance' do
-          before { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
-          let(:source)   { Environment.new :protected => false, :name => 'development', :username => 'root' }
-          let(:target)   { Environment.new :protected => false, :name => 'beta', :username => 'beta_user' }
+          before  { Time.stub! :now => Time.parse('2012/03/23 12:30:32') }
+
+          subject { Importer.new source, target, tmp_file }
+
+          let(:source)   { environment(:name => 'development', :username => 'root') }
+          let(:target)   { environment(:name => 'beta', :username => 'beta_user') }
           let(:tmp_file) { '/some/arbitrary/path' }
-          subject        { Importer.new source, target, tmp_file }
 
           it 'has target, source and tmp_file attribute methods' do
             %w[source target tmp_file].each { |m| subject.should respond_to m }
+          end
+
+          describe '#remove_tmp_file' do
+            it 'tries to remove the temporary file' do
+              Dbmanager.should_receive(:execute).with('rm \'/some/arbitrary/path\'')
+              subject.remove_tmp_file
+            end
           end
 
           describe '#run' do

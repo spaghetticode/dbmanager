@@ -2,20 +2,25 @@ require 'spec_helper'
 
 module Dbmanager
   describe Loadable do
-    subject { described_class.new }
-    before { subject.stub :output => STDStub.new, :input => STDStub.new }
+    subject  { described_class.new }
 
     describe '#run' do
       before do
         subject.stub(
-          :get_env          => 'test',
+          :dumper           => mock,
+          :input            => STDStub.new,
+          :output           => STDStub.new,
           :get_filename     => 'filename',
-          :default_filename => 'defaultname',
+          :default_filename => 'default_filename',
           :loader           => mock.as_null_object,
+          :get_env          => Environment.new(:name => 'beta', :adapter => 'mysql2')
         )
+        stub_rails_root
+        Dbmanager.stub!(:execute! => nil)
       end
 
       it 'sends expected output' do
+        subject.send(:dumper).stub(:run => nil)
         subject.run
         subject.output.content.should include('Database successfully loaded from filename.')
       end

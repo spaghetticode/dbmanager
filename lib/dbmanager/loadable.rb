@@ -2,18 +2,20 @@ module Dbmanager
   class Loadable
     include Runner
 
-    def run
-      self.target = get_env('target')
-      self.filename = get_filename('source', default_filename)
+    attr_accessor :filename, :target
 
+    def run
+      set_data
       dumper.run
       output.puts "Database successfully loaded from #{filename}."
     end
 
-    attr_accessor :filename, :target
-
-
     private
+
+    def set_data
+      self.target   = get_env('target')
+      self.filename = get_filename('source', default_filename)
+    end
 
     def dumper
       adapter::Loader.new(target, filename)
