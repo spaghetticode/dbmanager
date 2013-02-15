@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'fixtures/adapter_sample'
 
 module Dbmanager
-  describe Runner do
+  describe Runnable do
     let(:envs)   { [mock] }
     let(:input)  { STDStub.new }
     let(:output) { STDStub.new }
-    let(:klass)  { Class.new { include Runner} }
+    let(:klass)  { Class.new { include Runnable} }
     subject { klass.new(input, output) }
 
     before do

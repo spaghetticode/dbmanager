@@ -9,7 +9,7 @@
 # behaviour they provide.
 
 module Dbmanager
-  module Runner
+  module Runnable
     attr_reader :input, :output, :environments
 
     def self.run(module_name)

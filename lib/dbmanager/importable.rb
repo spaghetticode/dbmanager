@@ -11,7 +11,7 @@
 
 module Dbmanager
   class Importable
-    include Runner
+    include Runnable
 
     def run
       self.source = get_env('source')

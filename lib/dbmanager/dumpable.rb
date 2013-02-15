@@ -8,7 +8,7 @@
 
 module Dbmanager
   class Dumpable
-    include Runner
+    include Runnable
 
     def run
       self.source = get_env('source')
