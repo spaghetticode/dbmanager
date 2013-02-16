@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activesupport'
 
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec', '~> 2.12'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'cucumber'
   s.add_development_dependency 'guard-rspec'
