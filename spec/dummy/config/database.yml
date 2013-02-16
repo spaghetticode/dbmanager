@@ -2,10 +2,10 @@ development:
   adapter: mysql2
   database: dbmanager_dummy_dev
   username: root
-  password: root
+  password:
 
 test:
   adapter: mysql2
   database: dbmanager_dummy_test
   username: root
-  password: root
+  password:
