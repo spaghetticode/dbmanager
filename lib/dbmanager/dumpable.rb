@@ -8,9 +8,7 @@
 
 module Dbmanager
   module Dumpable
-    def self.extended(base)
-      class << base; attr_accessor :filename; end
-    end
+    attr_accessor :filename
 
     def run
       output.print "\nPlease choose target file (defaults to #{default_filename}): "
