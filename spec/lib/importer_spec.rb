@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 module Dbmanager
-  describe Importable do
-    subject { Importable.new }
+  describe Importer do
+    subject { described_class.new }
 
     before do
       stub_rails_root

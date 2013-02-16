@@ -5,14 +5,14 @@ module Dbmanager
     attr_accessor :filename, :target
 
     def run
-      set_data
+      get_data
       dumper.run
       output.puts "Database successfully loaded from #{filename}."
     end
 
     private
 
-    def set_data
+    def get_data
       self.target   = get_env('target')
       self.filename = get_filename('source', default_filename)
     end
