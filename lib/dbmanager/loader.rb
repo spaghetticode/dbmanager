@@ -6,7 +6,7 @@ module Dbmanager
 
     def run
       get_data
-      dumper.run
+      loader.run
       output.puts "Database successfully loaded from #{filename}."
     end
 
@@ -17,7 +17,7 @@ module Dbmanager
       self.filename = get_filename('source', default_filename)
     end
 
-    def dumper
+    def loader
       adapter::Loader.new(target, filename)
     end
 

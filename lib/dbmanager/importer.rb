@@ -2,17 +2,19 @@ module Dbmanager
   class Importer
     include Runnable
 
+    attr_accessor :target, :source
+
     def run
-      self.source = get_env('source')
-      self.target = get_env('target')
-
+      get_data
       raise EnvironmentProtectedError if target.protected?
-
       execute_import
       output.puts 'Database Import completed.'
     end
 
-    attr_accessor :target, :source
+    def get_data
+      self.source = get_env('source')
+      self.target = get_env('target')
+    end
 
     def execute_import
       adapter::Importer.new(source, target, tmp_file).run

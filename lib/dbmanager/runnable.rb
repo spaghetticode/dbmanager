@@ -1,13 +1,3 @@
-# The runner main responsibility is to interact with the user in order to gather
-# the information to accomplish the task.
-#
-# The runner object cannot do much when freshly instantiated, so for each kind
-# of available task there is a corresponding module that can extend the runner
-# so that it can accomplish its goal.
-#
-# Extension modules must define the #run method which contains the specific
-# behaviour they provide.
-
 module Dbmanager
   module Runnable
     attr_reader :input, :output, :environments

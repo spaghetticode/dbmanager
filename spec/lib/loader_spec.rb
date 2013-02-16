@@ -8,7 +8,7 @@ module Dbmanager
       before do
         stub_rails_root
         subject.stub(
-          :dumper           => mock,
+          :loader           => mock,
           :input            => STDStub.new,
           :output           => STDStub.new,
           :get_filename     => 'filename',
@@ -20,13 +20,13 @@ module Dbmanager
       end
 
       it 'sends expected output' do
-        subject.send(:dumper).stub(:run => nil)
+        subject.send(:loader).stub(:run => nil)
         subject.run
         subject.output.content.should include('Database successfully loaded from filename.')
       end
 
       it 'delegates the actual dumping to the dumper' do
-        subject.send(:dumper).should_receive(:run)
+        subject.send(:loader).should_receive(:run)
         subject.run
       end
     end

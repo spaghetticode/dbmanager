@@ -51,10 +51,10 @@ module Dbmanager
 
         def run
           Dbmanager.execute! create_db_if_missing_command
-          Dbmanager.execute! import_command
+          Dbmanager.execute! load_command
         end
 
-        def import_command
+        def load_command
           "mysql #{params(target)} < '#{tmp_file}'"
         end
 

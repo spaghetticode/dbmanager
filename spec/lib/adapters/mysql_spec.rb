@@ -61,9 +61,9 @@ module Dbmanager
             %w[target tmp_file].each { |m| subject.should respond_to m }
           end
 
-          describe '#import_command' do
+          describe '#load_command' do
             it 'returns expected command' do
-              subject.import_command.should == 'mysql -ubeta_user < \'/some/arbitrary/path\''
+              subject.load_command.should == 'mysql -ubeta_user < \'/some/arbitrary/path\''
             end
           end
 
@@ -89,7 +89,7 @@ module Dbmanager
             it 'creates the db if missing and then imports the db' do
               subject.stub!(:remove_tmp_file => true)
               Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
-              Dbmanager.should_receive(:execute!).with(subject.import_command)
+              Dbmanager.should_receive(:execute!).with(subject.load_command)
               subject.run
             end
           end
