@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 module Dbmanager
-  describe Dumpable do
-    subject { Dumpable.new }
+  describe Dumper do
+    subject { described_class.new }
 
     before do
       stub_rails_root

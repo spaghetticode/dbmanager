@@ -6,6 +6,7 @@ module Dbmanager
 
     describe '#run' do
       before do
+        stub_rails_root
         subject.stub(
           :dumper           => mock,
           :input            => STDStub.new,
@@ -15,7 +16,6 @@ module Dbmanager
           :loader           => mock.as_null_object,
           :get_env          => Environment.new(:name => 'beta', :adapter => 'mysql2')
         )
-        stub_rails_root
         Dbmanager.stub!(:execute! => nil)
       end
 

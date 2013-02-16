@@ -7,9 +7,9 @@ require 'active_support/core_ext/object/blank'
 module Dbmanager
   autoload :Environment, 'dbmanager/environment'
   autoload :YmlParser,   'dbmanager/yml_parser'
-  autoload :Runnable,     'dbmanager/runnable'
+  autoload :Runnable,    'dbmanager/runnable'
   autoload :Importable,  'dbmanager/importable'
-  autoload :Dumpable,    'dbmanager/dumpable'
+  autoload :Dumper,      'dbmanager/dumper'
   autoload :Loader,      'dbmanager/loader'
   autoload :Adapters,    'dbmanager/adapters'
 

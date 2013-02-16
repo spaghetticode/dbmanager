@@ -7,7 +7,7 @@
 # the specific database adapter which must implement the #run method.
 
 module Dbmanager
-  class Dumpable
+  class Dumper
     include Runnable
 
     def run

@@ -12,10 +12,8 @@ module Dbmanager
   module Runnable
     attr_reader :input, :output, :environments
 
-    def self.run(module_name)
-      runner_klass = Dbmanager.const_get(module_name.to_s.capitalize)
-      runner = runner_klass.new
-      runner.run
+    def self.run
+      new.run
     end
 
     def initialize(input=STDIN, output=STDOUT)
