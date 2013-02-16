@@ -10,7 +10,7 @@ module Dbmanager
   autoload :Runnable,     'dbmanager/runnable'
   autoload :Importable,  'dbmanager/importable'
   autoload :Dumpable,    'dbmanager/dumpable'
-  autoload :Loadable,    'dbmanager/loadable'
+  autoload :Loader,      'dbmanager/loader'
   autoload :Adapters,    'dbmanager/adapters'
 
   class EnvironmentProtectedError < StandardError

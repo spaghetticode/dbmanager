@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dbmanager
-  describe Loadable do
+  describe Loader do
     subject  { described_class.new }
 
     describe '#run' do
