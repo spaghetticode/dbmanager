@@ -13,14 +13,25 @@ module Dbmanager
       get_environment
     end
 
-    def get_filename type, default_filename
+    def get_filename(type, default_filename)
       output.print "\nPlease choose #{type} file (defaults to #{default_filename}): "
       filename = get_input
-      filename.blank? ? default_filename : Dbmanager.rails_root.join(filename)
+      if filename.blank?
+        default_filename
+      else
+        absolute_path(filename)
+      end
     end
 
-
     private
+
+    def absolute_path(filename)
+      if filename[0] == '/'
+        filename
+      else
+        Dbmanager.rails_root.join(filename)
+      end
+    end
 
     def get_environment
       environments.keys.each_with_index do |name, i|
