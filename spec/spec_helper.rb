@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'pathname'
 require 'dbmanager'
 require 'support/std_stub'
 
@@ -22,5 +23,5 @@ def fixture_path
 end
 
 def stub_rails_root
-  Dbmanager.stub :rails_root => "#{fixture_path}/rails"
+  Dbmanager.stub :rails_root => Pathname.new("#{fixture_path}/rails")
 end
