@@ -59,7 +59,6 @@ module Dbmanager
         end
 
         def create_db_if_missing_command
-          # it is safe to hardcode bundle exec here?
           "#{bundle} rake db:create RAILS_ENV=#{target.name}"
         end
 

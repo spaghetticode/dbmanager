@@ -2,10 +2,6 @@ module Dbmanager
   module Runnable
     attr_reader :input, :output, :environments
 
-    def self.run
-      new.run
-    end
-
     def initialize(input=STDIN, output=STDOUT)
       @input        = input
       @output       = output
