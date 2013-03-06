@@ -6,7 +6,6 @@ module Dbmanager
 
     describe '#run' do
       before do
-        stub_rails_root
         subject.stub(
           :loader           => mock,
           :input            => STDStub.new,

@@ -5,7 +5,6 @@ module Dbmanager
     subject { described_class.new }
 
     before do
-      stub_rails_root
       subject.stub :output => STDStub.new, :input => STDStub.new
     end
 

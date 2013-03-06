@@ -11,7 +11,6 @@ module Dbmanager
     subject      { klass.new(input, output) }
 
     before do
-      stub_rails_root
       YmlParser.stub!(:environments => envs)
       subject.stub(:get_environment => envs.first)
     end

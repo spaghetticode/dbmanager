@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Dbmanager do
-  describe '#rails_root' do
+  describe '#rails_root', :skip_stub_rails_root => true do
     it 'wraps Rails.root' do
       Rails = mock unless defined? Rails
       Rails.should_receive :root
