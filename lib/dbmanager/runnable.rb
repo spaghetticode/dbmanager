@@ -26,7 +26,7 @@ module Dbmanager
     private
 
     def absolute_path(filename)
-      if filename[0] == '/'
+      if filename[0].chr == '/'
         filename
       else
         Dbmanager.rails_root.join(filename)

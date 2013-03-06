@@ -52,7 +52,7 @@ module Dbmanager
         before { subject.stub(:get_input => '/some/path.sql') }
 
         it 'returns the absolute path as a Pathname instance' do
-          subject.get_filename('source', 'default').should == Pathname.new('/some/path.sql')
+          subject.get_filename('source', 'default').should == '/some/path.sql'
         end
       end
 
