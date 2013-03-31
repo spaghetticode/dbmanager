@@ -40,6 +40,33 @@ module Dbmanager
         end
       end
 
+      class Loader
+        include Connectable
+        attr_reader :target, :tmp_file
+
+        def initialize(target, tmp_file)
+          @target   = target
+          @tmp_file = tmp_file
+        end
+
+        def run
+          Dbmanager.execute! create_db_if_missing_command
+          Dbmanager.execute! load_command
+        end
+
+        def load_command
+          "mysql #{params(target)} < '#{tmp_file}'"
+        end
+
+        def create_db_if_missing_command
+          "#{bundle} rake db:create RAILS_ENV=#{target.name}"
+        end
+
+        def bundle
+          Dbmanager.execute('which bundle > /dev/null') ? 'bundle exec' : nil
+        end
+      end
+
       class Importer
         include Connectable
         attr_reader :source, :target, :tmp_file
@@ -52,27 +79,13 @@ module Dbmanager
 
         def run
           Dumper.new(source, tmp_file).run
-          Dbmanager.execute! create_db_if_missing_command
-          Dbmanager.execute! import_command
+          Loader.new(target, tmp_file).run
         ensure
           remove_tmp_file
         end
 
-        def import_command
-          "mysql #{params(target)} < '#{tmp_file}'"
-        end
-
         def remove_tmp_file
           Dbmanager.execute "rm '#{tmp_file}'"
-        end
-
-        def create_db_if_missing_command
-          # it is safe to hardcode bundle exec here?
-          "#{bundle} rake db:create RAILS_ENV=#{target.name}"
-        end
-
-        def bundle
-          Dbmanager.execute('which bundle') ? 'bundle exec' : nil
         end
       end
     end

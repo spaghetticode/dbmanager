@@ -3,7 +3,6 @@ require 'spec_helper'
 module Dbmanager
   describe YmlParser do
     before do
-      stub_rails_root
       YmlParser.instance_eval { @config = nil }
     end
 

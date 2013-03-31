@@ -53,9 +53,19 @@ string 'production' in their name are protected by default, which means you cann
 overwrite them unless you explicitly override this setting in the override file
 (see next section for more info).
 
-#### BEWARE
 
-**the import process is destructive** so be careful on which environment you
+#### Database Loads
+
+```ruby
+rake db:load
+```
+
+This rake task will load the db data from a dump file.
+
+You will be prompted to choose the source file (defaults to *tmp/{db_name}.sql* in the rails
+root) and the target environment.
+
+**Import and load processes are destructive** so be careful on which environment you
 choose to overwite. I take no responsibility for misuse or bugs in the code ;-)
 
 
@@ -114,6 +124,10 @@ https://www.relishapp.com/spaghetticode/dbmanager/docs
 run rspec tests: ```rake```
 
 run cucumber tests: ```cucumber```
+
+Cucumber tests require mysql server running. Update spec/dummy/config/database.yml
+with your mysql configuration, if necessary.
+
 
 
 ### TODO

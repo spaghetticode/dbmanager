@@ -7,37 +7,69 @@ module Dbmanager
     let(:input)  { STDStub.new }
     let(:output) { STDStub.new }
 
+    subject { Runner.new(input, output) }
+
     before do
       YmlParser.stub!(:environments => envs)
-      Runner.any_instance.stub(:get_environment => envs.first)
+      subject.stub(:choose_environment => envs.first)
     end
 
-    describe '#initialize' do
-      subject { Runner.new(input, output) }
+    it { should respond_to :input }
+    it { should respond_to :output }
+    it { should respond_to :environments }
 
+    describe '#initialize' do
       it 'sets expected attributes' do
-        subject.input.should        == input
-        subject.output.should       == output
+        subject.input.should  == input
+        subject.output.should == output
         subject.environments.should == envs
-        subject.source.should       == envs.first
       end
     end
 
     describe '#get_env' do
-      subject { Runner.new(input, output) }
-
-      it 'outputs default message' do
-        subject.get_env
-        output.content.should include('Please choose source db:')
-      end
-
       it 'outputs expected message' do
         subject.get_env('target')
         output.content.should include('Please choose target db:')
       end
 
       it 'returns the chosen environment' do
-        subject.get_env.should == envs.first
+        subject.get_env('target').should == envs.first
+      end
+    end
+
+    describe '#get_filename' do
+      it 'outputs expected message' do
+        subject.get_filename('target', 'defaultname')
+        output.content.should include('Please choose target file (defaults to defaultname):')
+      end
+
+      context 'when user inputs no filename' do
+        before { subject.stub(:get_input => '') }
+
+        it 'returns the default filename' do
+          subject.get_filename('source', '/default.sql').should == '/default.sql'
+        end
+      end
+
+      context 'when user inputs an absolute path' do
+        before { subject.stub(:get_input => '/some/path.sql') }
+
+        it 'returns the absolute path' do
+          subject.get_filename('source', 'default').should == '/some/path.sql'
+        end
+      end
+
+      context 'when user inputs a relative path' do
+        before { subject.stub(:get_input => 'filename.sql') }
+
+        it 'returns a pathname object' do
+          subject.get_filename('source', 'default').should be_a(Pathname)
+        end
+
+        it 'appends the rails root to the path' do
+          expected = Pathname.new("#{fixture_path}/rails/filename.sql")
+          subject.get_filename('source', 'default').should == expected
+        end
       end
     end
   end

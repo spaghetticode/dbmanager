@@ -4,8 +4,9 @@ module Dbmanager
   autoload :Environment, 'dbmanager/environment'
   autoload :YmlParser,   'dbmanager/yml_parser'
   autoload :Runner,      'dbmanager/runner'
-  autoload :Importable,  'dbmanager/importable'
-  autoload :Dumpable,    'dbmanager/dumpable'
+  autoload :Importer,    'dbmanager/importer'
+  autoload :Dumper,      'dbmanager/dumper'
+  autoload :Loader,      'dbmanager/loader'
   autoload :Adapters,    'dbmanager/adapters'
 
   class EnvironmentProtectedError < StandardError

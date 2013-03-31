@@ -8,6 +8,7 @@
 STDIN_STUB = 'STDIN_stub'
 DUMMY_PATH = '../../../spec/dummy'
 Dir.chdir File.expand_path(DUMMY_PATH, __FILE__) do
+  system 'mkdir tmp'
   system 'bundle install'
   system 'rm -f tmp/*sql'
   %w[
