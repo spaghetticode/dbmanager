@@ -1,22 +1,24 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'pathname'
 require 'dbmanager'
-require 'support/std_stub'
 
 RSpec.configure do |config|
+  config.order = :random
   config.color_enabled = true
-  config.formatter     = 'documentation'
-
+  config.formatter = 'documentation'
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
+  config.before(:each) do
+    stub_rails_root unless example.metadata[:skip_stub_rails_root]
+  end
+end
 
-  # Run specs in random order to surface order dependencies. If you find an
-  # order dependency and want to debug it, you can fix the order by providing
-  # the seed, which is printed after each run.
-  #     --seed 1234
-  config.order = 'random'
-  config.before(:each) { stub_rails_root unless example.metadata[:skip_stub_rails_root] }
+
+class STDStub < StringIO
+  def content
+    rewind
+    read
+  end
 end
 
 def fixture_path
