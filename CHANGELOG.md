@@ -1,3 +1,8 @@
+## v0.2.0
+
+* merge pull request from Elia (add loader task)
+* refactoring of the main structure and specs
+
 ## v0.1.7
 
 * merge pull request from Racko (add quotes to file names)
