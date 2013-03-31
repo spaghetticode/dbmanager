@@ -2,19 +2,14 @@ require 'spec_helper'
 
 module Dbmanager
   describe Dumper do
-    subject { described_class.new }
-
-    before do
-      subject.stub :output => STDStub.new, :input => STDStub.new
-    end
+    subject { described_class.new(STDStub.new, STDStub.new) }
 
     describe '#run' do
       before do
         subject.stub(
-          :get_env          => 'test',
-          :get_filename     => 'filename',
-          :default_filename => 'defaultname',
-          :dumper           => mock.as_null_object
+          :dumper       => mock.as_null_object,
+          :get_env      => mock(:database => 'beta'),
+          :get_filename => 'filename'
         )
       end
 

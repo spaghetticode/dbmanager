@@ -2,15 +2,39 @@ require 'spec_helper'
 
 module Dbmanager
   describe Importer do
-    subject { described_class.new }
+    subject { described_class.new(STDStub.new, STDStub.new) }
 
-    before do
-      subject.stub :output => STDStub.new, :input => STDStub.new, :get_env => nil
+    before { subject.stub :get_env => mock(:database => 'beta') }
+
+    it { should respond_to :source }
+    it { should respond_to :target }
+
+    describe '#run' do
+      context 'when target is protected' do
+        before { subject.stub :target => mock(:protected? => true) }
+
+        it 'raises EnvironmentProtectedError' do
+          expect { subject.run }.to raise_error(EnvironmentProtectedError)
+        end
+      end
+
+      context 'when target is not protected' do
+        before { subject.stub :target => mock(:protected? => false) }
+
+        it 'successfully complete import' do
+          subject.stub(:execute_import => nil)
+          subject.run
+          message = 'Database Import completed.'
+          subject.output.content.should include(message)
+        end
+      end
     end
 
-    it 'has target attribute reader' do
-      subject.instance_eval { @target = 'something'}
-      subject.target.should == 'something'
+    describe '#tmp_file' do
+      it 'includes expected path' do
+        Time.stub :now => Time.parse('1974/09/20 14:12:33')
+        subject.tmp_file.should =~ Regexp.new('dbmanager/spec/fixtures/rails/tmp/740920141233')
+      end
     end
 
     context 'when source and target have same adapter' do
@@ -42,34 +66,6 @@ module Dbmanager
 
       it 'adapter raises MixedAdapterError' do
         expect {subject.adapter}.to raise_error(MixedAdapterError)
-      end
-    end
-
-    describe '#run' do
-      context 'when target is protected' do
-        before { subject.stub :target => mock(:protected? => true) }
-
-        it 'raises EnvironmentProtectedError' do
-          expect { subject.run }.to raise_error(EnvironmentProtectedError)
-        end
-      end
-
-      context 'when target is not protected' do
-        before { subject.stub :target => mock(:protected? => false) }
-
-        it 'outputs expected messages' do
-          subject.stub(:execute_import => nil)
-          subject.run
-          message = 'Database Import completed.'
-          subject.output.content.should include(message)
-        end
-      end
-    end
-
-    describe '#tmp_file' do
-      it 'includes expected path' do
-        Time.stub :now => Time.parse('1974/09/20 14:12:33')
-        subject.tmp_file.should =~ Regexp.new('dbmanager/spec/fixtures/rails/tmp/740920141233')
       end
     end
   end
