@@ -11,8 +11,12 @@ module Dbmanager
 
     before do
       YmlParser.stub!(:environments => envs)
-      subject.stub(:get_environment => envs.first)
+      subject.stub(:choose_environment => envs.first)
     end
+
+    it { should respond_to :input }
+    it { should respond_to :output }
+    it { should respond_to :environments }
 
     describe '#initialize' do
       it 'sets expected attributes' do
@@ -42,7 +46,7 @@ module Dbmanager
       context 'when user inputs no filename' do
         before { subject.stub(:get_input => '') }
 
-        it 'returns default filename when user did not provide one' do
+        it 'returns the default filename' do
           subject.get_filename('source', '/default.sql').should == '/default.sql'
         end
       end
@@ -50,7 +54,7 @@ module Dbmanager
       context 'when user inputs an absolute path' do
         before { subject.stub(:get_input => '/some/path.sql') }
 
-        it 'returns the absolute path as a Pathname instance' do
+        it 'returns the absolute path' do
           subject.get_filename('source', 'default').should == '/some/path.sql'
         end
       end

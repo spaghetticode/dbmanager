@@ -10,7 +10,7 @@ module Dbmanager
 
     def get_env(type)
       output.puts "\nPlease choose #{type} db:\n\n"
-      get_environment
+      choose_environment
     end
 
     def get_filename(type, default_filename)
@@ -26,14 +26,14 @@ module Dbmanager
     private
 
     def absolute_path(filename)
-      if filename[0].chr == '/'
+      if filename.first == '/'
         filename
       else
         Dbmanager.rails_root.join(filename)
       end
     end
 
-    def get_environment
+    def choose_environment
       environments.keys.each_with_index do |name, i|
         output.puts "#{i+1}) #{name}"
       end
