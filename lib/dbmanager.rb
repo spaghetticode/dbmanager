@@ -1,8 +1,4 @@
-require 'active_support/deprecation'
-require 'active_support/core_ext/module'
-require 'active_support/ordered_hash'
-require 'active_support/core_ext/enumerable'
-require 'active_support/core_ext/object/blank'
+require 'active_support/all'
 
 module Dbmanager
   autoload :Environment, 'dbmanager/environment'
