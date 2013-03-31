@@ -125,6 +125,10 @@ run rspec tests: ```rake```
 
 run cucumber tests: ```cucumber```
 
+Cucumber tests require mysql server running. Update spec/dummy/config/database.yml
+with your mysql configuration, if necessary.
+
+
 
 ### TODO
 
