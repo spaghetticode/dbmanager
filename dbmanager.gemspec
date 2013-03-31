@@ -20,13 +20,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency 'rails'
-
   s.add_development_dependency 'rspec', '~> 2.12'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rails'
   s.add_development_dependency 'mysql2'
   s.add_development_dependency 'cucumber'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'guard-cucumber'
-  s.add_development_dependency 'mysql2'
 end
