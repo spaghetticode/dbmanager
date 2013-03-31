@@ -2,13 +2,12 @@ require 'spec_helper'
 require 'fixtures/adapter_sample'
 
 module Dbmanager
-  describe Runnable do
+  describe Runner do
     let(:envs)   { [mock] }
     let(:input)  { STDStub.new }
     let(:output) { STDStub.new }
-    let(:klass)  { Class.new { include Runnable} }
 
-    subject      { klass.new(input, output) }
+    subject { Runner.new(input, output) }
 
     before do
       YmlParser.stub!(:environments => envs)

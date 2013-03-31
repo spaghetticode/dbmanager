@@ -1,6 +1,5 @@
 module Dbmanager
-  class Loader
-    include Runnable
+  class Loader < Runner
 
     attr_accessor :filename, :target
 

@@ -1,6 +1,5 @@
 module Dbmanager
-  class Dumper
-    include Runnable
+  class Dumper < Runner
 
     attr_accessor :filename, :source
 

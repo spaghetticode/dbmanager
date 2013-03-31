@@ -1,6 +1,5 @@
 module Dbmanager
-  class Importer
-    include Runnable
+  class Importer < Runner
 
     attr_accessor :target, :source
 

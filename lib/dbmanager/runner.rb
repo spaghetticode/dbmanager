@@ -1,5 +1,5 @@
 module Dbmanager
-  module Runnable
+  class Runner
     attr_reader :input, :output, :environments
 
     def initialize(input=STDIN, output=STDOUT)
