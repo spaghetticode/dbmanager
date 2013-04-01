@@ -14,4 +14,5 @@ Scenario: Dump database to user specified file
 
   When  I run the task "db:dump" with input "1 tmp/dbmanager_dummy_dev.sql"
   Then  a sql dump should be created in "tmp/dbmanager_dummy_dev.sql"
-  And   the dump file should include expected schema
+  And   the dump file should have expected schema
+  And   the dump file should include "Andrea Longhi"
