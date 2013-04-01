@@ -16,6 +16,7 @@ Dir.chdir File.expand_path(DUMMY_PATH, __FILE__) do
     db:create:all
     db:migrate
     db:structure:dump
+    db:seed
   ].each do |command|
     system "bundle exec rake #{command}"
   end
