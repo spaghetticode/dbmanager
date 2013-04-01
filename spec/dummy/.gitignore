@@ -12,6 +12,7 @@
 
 # Ignore db structure dump. It is created by cucumber.
 db/structure.sql
+db/schema.rb
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
@@ -19,3 +20,4 @@ db/structure.sql
 
 # Ignore STDIN stub file, created by cucumber
 STDIN_stub
+spec/dummy/rerun.txt
