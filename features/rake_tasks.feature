@@ -18,3 +18,8 @@ Scenario: db:import task
   Given I go to the dummy rails app folder
   When  I execute "rake -T"
   Then  I should see "db:import" among the listed tasks
+
+Scenario: db:load task
+  Given I go to the dummy rails app folder
+  When  I execute "rake -T"
+  Then  I should see "db:load" among the listed tasks
