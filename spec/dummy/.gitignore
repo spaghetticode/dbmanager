@@ -14,9 +14,9 @@
 db/structure.sql
 db/schema.rb
 
-# Ignore all logfiles and tempfiles.
+# Ignore logfiles and sql files in tmp
 /log/*.log
-/tmp
+/tmp/*.sql
 
 # Ignore STDIN stub file, created by cucumber
 STDIN_stub
