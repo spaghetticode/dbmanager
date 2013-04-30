@@ -1,3 +1,8 @@
+## v0.3.0
+
+* add support for --set-gtid-purged=OFF flag when using mysqldump with version number >= 5.6
+* refactoring and general code cleanup
+
 ## v0.2.0
 
 * merge pull request from Elia (add loader task)
