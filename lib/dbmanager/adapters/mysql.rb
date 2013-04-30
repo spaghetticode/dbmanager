@@ -72,11 +72,7 @@ module Dbmanager
         end
 
         def create_db_if_missing_command
-          "#{bundle} rake db:create RAILS_ENV=#{target.name}"
-        end
-
-        def bundle
-          Dbmanager.execute('which bundle > /dev/null') ? 'bundle exec' : nil
+          "bundle exec rake db:create RAILS_ENV=#{target.name}"
         end
       end
 
