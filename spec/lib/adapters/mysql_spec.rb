@@ -37,12 +37,18 @@ module Dbmanager
 
         describe '#dump_command' do
           it 'returns expected command' do
-            command = [
+            [
               'mysqldump --ignore-table=database.a_view',
-              '--ignore-table=database.another_view -uroot',
-              '-psecret -h0.0.0.0 -P42 database > \'/tmp/dump_file.sql\''
-            ].join(' ')
-            subject.dump_command.should == command
+              '--ignore-table=database.another_view',
+              '-uroot -psecret -h0.0.0.0 -P42 database',
+              '> \'/tmp/dump_file.sql\''
+            ].each do |command_part|
+              subject.dump_command.should include command_part
+            end
+          end
+
+          it 'adds a flag that sets off gtid-purged' do
+            subject.dump_command.should include '--set-gtid-purged=OFF'
           end
         end
       end

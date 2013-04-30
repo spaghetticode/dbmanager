@@ -28,7 +28,7 @@ module Dbmanager
         end
 
         def dump_command
-          "mysqldump #{ignoretables} #{params(source)} > '#{filename}'"
+          "mysqldump #{ignoretables} #{set_gtid_purged_off} #{params(source)} > '#{filename}'"
         end
 
         def ignoretables
@@ -37,6 +37,14 @@ module Dbmanager
               arr << "--ignore-table=#{source.database}.#{table}"
             end.join ' '
           end
+        end
+
+        private
+
+        # Extra parameter to fix a 5.6.10 mysqldump issue with older mysql server releases
+        # See http://bugs.mysql.com/bug.php?id=68314
+        def set_gtid_purged_off
+          '--set-gtid-purged=OFF'
         end
       end
 
