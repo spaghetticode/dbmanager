@@ -47,8 +47,29 @@ module Dbmanager
             end
           end
 
-          it 'adds a flag that sets off gtid-purged' do
-            subject.dump_command.should include '--set-gtid-purged=OFF'
+          context 'when mysqldump version is >= than 5.6' do
+            before do
+              subject.stub(:get_mysqldump_version => 'mysqldump  Ver 10.13 Distrib 5.6.0, for osx10.8 (i386)')
+            end
+
+            it {subject.mysqldump_version.should == 5.6 }
+
+            it 'adds a flag that sets off gtid-purged' do
+              subject.dump_command.should include '--set-gtid-purged=OFF'
+            end
+          end
+
+          context 'when mysqldump version is < than 5.6' do
+            before do
+              subject.stub(:get_mysqldump_version => 'mysqldump  Ver 10.13 Distrib 5.5.28, for osx10.8 (i386)')
+            end
+
+            it {subject.mysqldump_version.should == 5.5 }
+
+            it 'adds a flag that sets off gtid-purged' do
+              subject.dump_command.should_not include '--set-gtid-purged=OFF'
+            end
+
           end
         end
       end

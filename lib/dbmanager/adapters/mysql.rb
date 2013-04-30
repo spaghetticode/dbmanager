@@ -27,6 +27,15 @@ module Dbmanager
           Dbmanager.execute! dump_command
         end
 
+        def mysqldump_version
+          get_mysqldump_version =~ /Distrib\s+(\d+\.\d+)/
+          $1.to_f
+        end
+
+        def get_mysqldump_version
+          `mysqldump --version`
+        end
+
         def dump_command
           "mysqldump #{ignoretables} #{set_gtid_purged_off} #{params(source)} > '#{filename}'"
         end
@@ -41,10 +50,10 @@ module Dbmanager
 
         private
 
-        # Extra parameter to fix a 5.6.10 mysqldump issue with older mysql server releases
+        # Extra parameter to fix a 5.6 mysqldump issue with older mysql server releases
         # See http://bugs.mysql.com/bug.php?id=68314
         def set_gtid_purged_off
-          '--set-gtid-purged=OFF'
+          mysqldump_version >= 5.6 ? '--set-gtid-purged=OFF' : ''
         end
       end
 
