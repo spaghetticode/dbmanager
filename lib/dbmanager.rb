@@ -37,11 +37,11 @@ module Dbmanager
     Rails.root
   end
 
-  def execute(command, output=STDOUT)
+  def execute(command, output=$stdout)
     execute!(command, output) rescue false
   end
 
-  def execute!(command, output=STDOUT)
+  def execute!(command, output=$stdout)
     output.puts %(executing "#{command}")
     result = `#{command}`
     $?.exitstatus.zero? ? result : raise(CommandError)
