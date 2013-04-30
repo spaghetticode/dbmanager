@@ -49,7 +49,8 @@ module Dbmanager
 
           context 'when mysqldump version is >= than 5.6' do
             before do
-              subject.stub(:get_mysqldump_version => 'mysqldump  Ver 10.13 Distrib 5.6.0, for osx10.8 (i386)')
+              version = 'mysqldump  Ver 10.13 Distrib 5.6.0, for osx10.8 (i386)'
+              Dbmanager.should_receive(:execute).with('mysqldump --version').and_return(version)
             end
 
             it {subject.mysqldump_version.should == 5.6 }
@@ -61,7 +62,8 @@ module Dbmanager
 
           context 'when mysqldump version is < than 5.6' do
             before do
-              subject.stub(:get_mysqldump_version => 'mysqldump  Ver 10.13 Distrib 5.5.28, for osx10.8 (i386)')
+              version = 'mysqldump  Ver 10.13 Distrib 5.5.28, for osx10.8 (i386)'
+              Dbmanager.should_receive(:execute).with('mysqldump --version').and_return(version)
             end
 
             it {subject.mysqldump_version.should == 5.5 }

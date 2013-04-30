@@ -28,12 +28,8 @@ module Dbmanager
         end
 
         def mysqldump_version
-          get_mysqldump_version =~ /Distrib\s+(\d+\.\d+)/
+          Dbmanager.execute('mysqldump --version') =~ /Distrib\s+(\d+\.\d+)/
           $1.to_f
-        end
-
-        def get_mysqldump_version
-          `mysqldump --version`
         end
 
         def dump_command
