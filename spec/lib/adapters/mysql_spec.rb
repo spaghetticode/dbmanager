@@ -113,7 +113,7 @@ module Dbmanager
           end
 
           describe '#run' do
-            it 'creates the db if missing and then imports the db' do
+            xit 'creates the db if missing and then imports the db' do
               subject.stub!(:remove_tmp_file => true)
               Dbmanager.should_receive(:execute!).with(subject.create_db_if_missing_command)
               Dbmanager.should_receive(:execute!).with(subject.load_command)

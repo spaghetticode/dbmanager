@@ -38,11 +38,12 @@ module Dbmanager
   end
 
   def execute(command, output=STDOUT)
-    output.puts %(executing "#{command}")
-    system command
+    execute!(command, output) rescue false
   end
 
-  def execute!(command)
-    execute(command) or raise CommandError
+  def execute!(command, output=STDOUT)
+    output.puts %(executing "#{command}")
+    result = `#{command}`
+    $?.exitstatus.zero? ? result : raise(CommandError)
   end
 end

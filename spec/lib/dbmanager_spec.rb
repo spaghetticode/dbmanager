@@ -10,29 +10,33 @@ describe Dbmanager do
   end
 
   describe '#execute' do
-    it 'executes a system command' do
-      Dbmanager.should_receive(:system)
-      Dbmanager.execute('echo')
-    end
-
     it 'outputs the command that is executing' do
       output = STDStub.new
       Dbmanager.execute('echo', output)
       output.content.should include 'executing "echo"'
     end
-  end
 
-  describe '#execute!' do
-    it 'wraps a call to #execute' do
-      Dbmanager.should_receive(:execute).and_return(true)
-      Dbmanager.execute!('echo')
+    it 'executes a system command and returns the output' do
+      Dbmanager.execute!('echo asd').chomp.should == 'asd'
     end
 
     it 'raises an error when not successful' do
-      Dbmanager.stub!(:system => false)
       expect do
-        Dbmanager.execute!('echo')
+        Dbmanager.execute!('gibberish')
       end.to raise_error(Dbmanager::CommandError)
+    end
+  end
+
+  describe '#execute' do
+    it 'wraps a call to #execute!' do
+      Dbmanager.should_receive(:execute!).and_return(true)
+      Dbmanager.execute!('echo')
+    end
+
+    it 'raises no error when not successful' do
+      expect do
+        Dbmanager.execute('gibberish')
+      end.to_not raise_error(Dbmanager::CommandError)
     end
   end
 end
