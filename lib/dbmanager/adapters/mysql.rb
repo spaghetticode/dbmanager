@@ -63,7 +63,15 @@ module Dbmanager
         end
 
         def run
+          create_db_if_missing
+          load
+        end
+
+        def create_db_if_missing
           Dbmanager.execute! create_db_if_missing_command
+        end
+
+        def load
           Dbmanager.execute! load_command
         end
 
