@@ -129,6 +129,15 @@ Cucumber tests require mysql server running. Update spec/dummy/config/database.y
 with your mysql configuration, if necessary.
 
 
+## Upgrade Notice
+
+If you're still on rails 2.x and you're upgrading dbmanager to the latest version please rerun the
+dbmanager rake file generator with:
+
+```ruby
+script/generate dbmanager
+```
+
 
 ### TODO
 
