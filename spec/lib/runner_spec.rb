@@ -10,7 +10,7 @@ module Dbmanager
     subject { Runner.new(input, output) }
 
     before do
-      YmlParser.stub!(:environments => envs)
+      YmlParser.stub(:environments => envs)
       subject.stub(:choose_environment => envs.first)
     end
 

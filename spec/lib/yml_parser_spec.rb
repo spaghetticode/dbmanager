@@ -40,7 +40,7 @@ module Dbmanager
     context 'when there is a dbmanager_override file' do
       context 'when the file is empty' do
         it 'doesnt raise any error' do
-          YAML.stub!(:load => nil)
+          YAML.stub(:load => nil)
           expect { YmlParser.config }.to_not raise_error
         end
       end
