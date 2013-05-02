@@ -1,6 +1,9 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'dbmanager'
 
+require 'coveralls'
+Coveralls.wear!
+
 RSpec.configure do |config|
   config.order = :random
   config.color_enabled = true
