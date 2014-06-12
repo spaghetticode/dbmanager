@@ -17,6 +17,7 @@ module Dbmanager
       class Dumper
         include Connectable
         attr_reader :source, :filename
+        attr_writer :mysqldump_version
 
         def initialize(source, filename)
           @source   = source
@@ -28,7 +29,11 @@ module Dbmanager
         end
 
         def mysqldump_version
-          Dbmanager.execute('mysqldump --version') =~ /Distrib\s+(\d+\.\d+)/
+          @mysqldump_version ||= extract_version Dbmanager.execute('mysqldump --version')
+        end
+
+        def extract_version(version)
+          version =~ /Distrib\s+(\d+\.\d+)/
           $1.to_f
         end
 
