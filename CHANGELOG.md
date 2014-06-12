@@ -1,3 +1,8 @@
+## v0.4.0
+
+* add capistrano integration via db:import task
+* minor changes to support capistrano integration
+
 ## v0.3.0
 
 * add support for --set-gtid-purged=OFF flag when using mysqldump with version number >= 5.6
