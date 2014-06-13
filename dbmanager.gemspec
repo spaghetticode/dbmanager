@@ -19,7 +19,12 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'rails'
+  if RUBY_VERSION.to_f > 1.8
+    s.add_dependency 'rails'
+  else
+    s.add_dependency 'rails', '~> 3'
+    s.add_development_dependency 'listen', '1.3.1'
+  end
   s.add_development_dependency 'rspec', '~> 2.12'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'mysql2'

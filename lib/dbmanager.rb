@@ -1,3 +1,4 @@
+require 'active_support/deprecation'
 require 'active_support/all'
 
 module Dbmanager
