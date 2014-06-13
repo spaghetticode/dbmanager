@@ -1,7 +1,11 @@
+if defined?(Capistrano::Version) && Gem::Version.new(Capistrano::Version).release >= Gem::Version.new("3.0")
+  raise 'Capistrano 3 is not supported yet!'
+end
+
+
 _cset :dbmanager_remote_env, lambda {
   Dbmanager::YmlParser.environments[rails_env.to_s]
 }
-
 
 _cset :dbmanager_local_env, lambda {
   Dbmanager::YmlParser.environments[Rails.env]
