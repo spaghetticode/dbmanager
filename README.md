@@ -113,6 +113,17 @@ ignoretables directive:
 ```
 
 
+## Capistrano Integration
+
+You can use DBmanager via Capistrano as well. At the moment the only available
+task is import your remote database into your local machine.
+You can do that by running
+
+```bash
+  bundle exec cap <environment> db:import
+```
+
+
 ## Documentation
 
 You can find some more documentation on the workings of the gem on relish:
