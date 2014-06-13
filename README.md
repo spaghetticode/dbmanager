@@ -116,11 +116,28 @@ ignoretables directive:
 ## Capistrano Integration
 
 You can use DBmanager via Capistrano as well. At the moment the only available
-task is import your remote database into your local machine.
+task is import your remote database into your local machine. The use is currently
+limited to Capistrano 2.x
+
 You can do that by running
 
 ```bash
   bundle exec cap <environment> db:import
+```
+
+### Custom Capistrano configuration
+
+If you need to change some configuration option (notably overwrite database configurations from
+database.yml such as username, password and so on) you need to set those custom values in your
+deployment recipe. For example, if you need to set the remote database password using the remote
+ENV values you should add:
+
+```ruby
+  set :dbmanager_remote_env, lambda {
+    Dbmanager::YmlParser.environments[rails_env.to_s].tap do |env|
+      env.password = capture('echo $MYSQL_PASSWORD')
+    end
+  }
 ```
 
 
