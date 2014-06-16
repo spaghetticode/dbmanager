@@ -1,3 +1,7 @@
+## v0.4.1
+
+* capistrano recipe bug fixes
+
 ## v0.4.0
 
 * add capistrano integration via db:import task
