@@ -115,11 +115,17 @@ ignoretables directive:
 
 ## Capistrano Integration
 
-You can use DBmanager via Capistrano as well. At the moment the only available
+You can use dbmanager via Capistrano as well. At the moment the only available
 task is import the remote databases into your local machine. The use is currently
-limited to Capistrano 2.x
+limited to Capistrano 2.x.
 
-You can do that by running
+Update deploy.rb recipe to include dbmanager recipes:
+
+```ruby
+require 'dbmanager/capistrano'
+```
+
+Importing the remote db to your local machine is as easy as typing:
 
 ```bash
   bundle exec cap <environment> db:import
