@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   if RUBY_VERSION.to_f > 1.8
     s.add_dependency 'rails'
   else
-    s.add_dependency 'rails', '~> 3'
+    s.add_dependency 'rails', '< 4'
     s.add_development_dependency 'listen', '1.3.1'
   end
   s.add_development_dependency 'rspec', '~> 2.12'
