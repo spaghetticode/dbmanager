@@ -41,6 +41,10 @@ module Dbmanager
           "mysqldump #{ignoretables} #{set_gtid_purged_off} #{params(source)} > '#{filename}'"
         end
 
+        def dump_command_ssh
+          "mysqldump #{ignoretables} #{set_gtid_purged_off} #{params(source)} |"
+        end
+
         def ignoretables
           if source.ignoretables.present?
             source.ignoretables.inject [] do |arr, table|
@@ -82,6 +86,10 @@ module Dbmanager
 
         def load_command
           "mysql #{params(target)} < '#{tmp_file}'"
+        end
+
+        def load_command_ssh
+          "mysql #{params target}"
         end
 
         def create_db_if_missing_command
