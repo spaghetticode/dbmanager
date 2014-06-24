@@ -42,7 +42,6 @@ Capistrano::Configuration.instance(:must_exist).load do
       require 'config/environment.rb'
       require 'active_support/core_ext'
       require 'dbmanager'
-      require 'dbmanager'
 
       dumper = Dbmanager::Adapters::Mysql::Dumper.new(dbmanager_local_env, '')
       loader = Dbmanager::Adapters::Mysql::Loader.new(dbmanager_remote_env, '')
