@@ -1,3 +1,7 @@
+## v0.4.2
+
+* capistrano related code fix
+
 ## v0.4.1
 
 * capistrano recipe bug fixes
