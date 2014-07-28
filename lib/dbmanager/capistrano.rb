@@ -37,5 +37,21 @@ Capistrano::Configuration.instance(:must_exist).load do
         end
       end
     end
+
+    task :export do
+      require 'config/environment.rb'
+      require 'active_support/core_ext'
+      require 'dbmanager'
+
+      dumper = Dbmanager::Adapters::Mysql::Dumper.new(dbmanager_local_env, '')
+      loader = Dbmanager::Adapters::Mysql::Loader.new(dbmanager_remote_env, '')
+
+      raise Dbmanager::EnvironmentProtectedError if loader.target.protected?
+
+      address = "#{fetch :user}@#{roles[:web].first.host}"
+      command = "#{dumper.dump_command_ssh} ssh #{address} '#{loader.load_command_ssh}'"
+      puts "executing #{command}..."
+      system command
+    end
   end
 end

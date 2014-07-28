@@ -131,6 +131,14 @@ Importing the remote db to your local machine is as easy as typing:
   bundle exec cap <environment> db:import
 ```
 
+For database export from your local machine to remote:
+
+```bash
+  bundle exec cap <environment> db:export
+```
+This whole functionality is still very WIP, so act accordingly.
+
+
 ### Custom Capistrano configuration
 
 If you need to change some configuration option (notably overwrite database configurations from
