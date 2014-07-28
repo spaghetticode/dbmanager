@@ -23,10 +23,9 @@ Capistrano::Configuration.instance(:must_exist).load do
       dumper = Dbmanager::Adapters::Mysql::Dumper.new(dbmanager_remote_env, '/dev/stdout')
       loader = Dbmanager::Adapters::Mysql::Loader.new(dbmanager_local_env, '/dev/stdin')
       dumper.mysqldump_version = dumper.extract_version capture('mysqldump --version')
-
       Open3.popen3 loader.load_command do |input, output, error|
         begin
-          run dumper.dump_command do |channel, stream, data|
+          run dumper.dump_command_ssh do |channel, stream, data|
             input << data if stream == :out
             raise data    if stream == :err
           end
@@ -49,7 +48,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       raise Dbmanager::EnvironmentProtectedError if loader.target.protected?
 
       address = "#{fetch :user}@#{roles[:web].first.host}"
-      command = "#{dumper.dump_command_ssh} ssh #{address} '#{loader.load_command_ssh}'"
+      command = "#{dumper.dump_command_ssh} | ssh #{address} '#{loader.load_command_ssh}'"
       puts "executing #{command}..."
       system command
     end

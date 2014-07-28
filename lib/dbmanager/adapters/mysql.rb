@@ -42,7 +42,7 @@ module Dbmanager
         end
 
         def dump_command_ssh
-          "mysqldump #{ignoretables} #{set_gtid_purged_off} #{params(source)} |"
+          "mysqldump #{ignoretables} #{set_gtid_purged_off} #{params(source)}"
         end
 
         def ignoretables
